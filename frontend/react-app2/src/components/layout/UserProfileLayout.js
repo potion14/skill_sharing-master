@@ -8,7 +8,7 @@ function UserProfileLayout() {
     const [courses, setCourses] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [cardId, setCardId] = useState(null);
-    const [pressedSort, setPS] = useState(null);
+    const [pressedSort, setPS] = useState('none');
 
     useEffect(() => {
         const url = 'http://127.0.0.1:8000/api/v1/courses/user_courses/' + localStorage.getItem('UserId');
@@ -24,7 +24,7 @@ function UserProfileLayout() {
             setCourses(res.data)
             setIsLoading(false)
         })
-    })
+    }, [])
 
     function getId(id) {
         setCardId(id)
@@ -55,7 +55,7 @@ function UserProfileLayout() {
                 <div className={classes.userCreatedCourses}>
                     <h2>User Created Courses</h2>
                     <div className={classes.cList}>
-                    <UserCoursesList courses={courses} IsLoading={isLoading} returnId={getId} pressedSort={pressedSort} buttonContent="usun"/>
+                    <UserCoursesList courses={courses} IsLoading={isLoading} returnId={getId} pressedSort={pressedSort} buttonContent="usun" pressedFilter='none'/>
                     </div>
                 </div>
             </div>

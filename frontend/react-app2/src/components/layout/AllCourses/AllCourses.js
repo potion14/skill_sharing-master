@@ -22,7 +22,6 @@ export default function AllCourses(props) {
 
     useEffect(() => {
         const url = 'http://127.0.0.1:8000/api/v1/courses/all_courses';
-        const token = localStorage.getItem('token');
         axios.get(url, {
         auth: {
             username: localStorage.getItem('username'),

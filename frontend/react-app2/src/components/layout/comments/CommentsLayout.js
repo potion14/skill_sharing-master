@@ -9,16 +9,21 @@ export default function CommentsLayout(props) {
     const [comments, setC] = useState([]);
     const [loading, setLoading] = useState(true);
     const [id, setId] = useState(props.chapterId);
-    const url = 'http://127.0.0.1:8000/api/v1/courses/course/chapter/' + props.chapterId + '/comments'
-    console.log("chapterId: ", props.chapterId)
+    
+    //console.log("chapterId: ", props.chapterId)
 
     useEffect(() => {
-        getData()
-        console.log("useEffect")
+        setId(props.chapterId)
+        if (comments.length === 0) getData(id)
+        console.log("ustawione w commentLayout id: ", id)
+        console.log("comments: ", comments)
     }, [getData]) //problematic point (, [])
 
-    async function getData() {
-        await axios.get(url, {
+    function getData(id) {
+        const url = 'http://127.0.0.1:8000/api/v1/courses/course/chapter/' + id + '/comments'
+        console.log(url)
+        console.log("getData")
+        axios.get(url, {
             auth: {
                 username: localStorage.getItem('username'),
                 email: localStorage.getItem('email'),
@@ -26,7 +31,8 @@ export default function CommentsLayout(props) {
             }}).then(res => {
                 console.log("axios get")
                 setC(res.data);
-                setLoading(false)
+                setLoading(false);
+                setId(null)
             })
     }
 
