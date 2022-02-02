@@ -58,7 +58,7 @@ class CoursePageLayout extends Component {
     componentWillUnmount() {
         //console.log("parrent rating in cdm: ", this.state.rating);
         const url1 = 'http://127.0.0.1:8000/api/v1/courses/course/' + this.state.pressedCourseId + '/ratings/'
-        axios.post(url1, {
+        if (this.state.rating > 0) axios.post(url1, {
             course: this.state.pressedCourseId,
             rating: this.state.rating
         }, {

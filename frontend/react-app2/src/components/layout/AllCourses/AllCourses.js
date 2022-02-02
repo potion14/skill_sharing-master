@@ -17,7 +17,8 @@ export default function AllCourses(props) {
         filters: ['none', 'categories']
     })
     const [pressedSorting, setPressedSort] = useState(null);
-    const [pressedFiltering, setPressedFilter] = useState(null);
+    const [pressedFiltering, setPressedFilter] = useState("none"); // none or category
+    const [pressedFilteringId, setPressedFilterId] = useState(null); //subcategory id
 
     useEffect(() => {
         const url = 'http://127.0.0.1:8000/api/v1/courses/all_courses';
@@ -37,13 +38,8 @@ export default function AllCourses(props) {
 
     function getId(id) {
         setCardId(id)
-        //console.log("id: ", id)
         setModalOpen(true)
     }
-
-    // function modalClose() {
-    //     setModalOpen(false)
-    // }
 
     function onSortClick(e, value) {
         e.preventDefault()
@@ -72,13 +68,13 @@ export default function AllCourses(props) {
                         {
                           sortFilter.filters.map((i, index) => <li key={index} tabIndex={index} onClick={(e) => {onFilterClick(e, i)}}>{i}</li>)
                         }
-                        <CategoriesList pressedFilter={setPressedFilter} />
+                        <CategoriesList pressedFilter={setPressedFilterId} />
                     </ul>
                 </div>
             </div>
             <div className={classes.middleContent}>
                 <span className={classes.userCoursesText}>All Courses</span>
-                <UserCoursesList courses={courses} IsLoading={isLoading} returnId={getId} pressedFilter={pressedFiltering}
+                <UserCoursesList courses={courses} IsLoading={isLoading} returnId={getId} pressedFilter={pressedFiltering} pressedFilterId={pressedFilteringId}
                 pressedSort={pressedSorting} buttonContent="zapisz" page="AllCourses"/>
             </div>
             <div className={classes.rightSide}></div>

@@ -26,6 +26,14 @@ export default function SubcategoriesList(props) {
     }, [])
 
     return (
-        <div>{subcategories.map((i, index) => <div key={index} onClick={(e) => {onClick(e, i.id)}}>{props.main_category_id === i.main_category ? i.name : null}</div>)}</div>
+        <div>
+            {
+            subcategories.map((i, index) => <div className={classes.subcategory} key={index} onClick={(e) => {onClick(e, i.id)}}>
+                {
+                    props.main_category_id === i.main_category ? i.name : null
+                }
+            </div>)
+            }
+        </div>
     )
 }

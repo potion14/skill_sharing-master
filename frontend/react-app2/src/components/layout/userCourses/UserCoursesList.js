@@ -24,6 +24,7 @@ export default function UserCoursesList(props) {
         } else if (pressedSort === 'none' || pressedSort === null || pressedFilter === 'none') {
             SetSCS(courses)
         }
+        console.log("got id: ", props.pressedFilterId)
     })
 
     function getData(id) {
@@ -54,12 +55,13 @@ export default function UserCoursesList(props) {
             <div className={classes.userCoursesListContainer}>
                 {
                 isLoading === false ?
-                sortedCoursesState.filter(course => course.category === 1).map(course => <CourseCard
+                sortedCoursesState.filter(course => course.category === props.pressedFilterId).map(course => <CourseCard
                 key={course.id}
                 id={course.id}
                 title={course.title}
                 buttonText={props.buttonContent}
-                sendData = {getData}/>) : 
+                sendData = {getData}
+                page={props.page}/>) : 
                 <div className={classes.loadingWrapper}><div className={classes.loading}></div></div>
                 }
             </div> : null
@@ -76,6 +78,7 @@ export default function UserCoursesList(props) {
             <div className={classes.loadingWrapper}><div className={classes.loading}></div></div>
             }
         </div> */}
+        {pressedFilter === 'none' ?
         <div className={classes.userCoursesListContainer}>
             {
             isLoading === false ?
@@ -88,7 +91,8 @@ export default function UserCoursesList(props) {
             page={props.page}/>) : 
             <div className={classes.loadingWrapper}><div className={classes.loading}></div></div>
             }
-        </div>
+        </div> : null
+        }
     </div>
     )
 }
