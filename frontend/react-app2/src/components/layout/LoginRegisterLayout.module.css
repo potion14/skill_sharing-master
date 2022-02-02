@@ -1,0 +1,89 @@
+.loginRegisterLayoutContainer{
+    height: calc(100vh - 80px);
+    display: flex;
+}
+
+.leftPanel{
+    flex: 5;
+    display: flex;
+    opacity: 100%;
+    background: linear-gradient(to bottom, transparent, mistyrose 75%),
+                linear-gradient(to right, transparent, mistyrose 99%), url("kurisu.gif");
+    background-size: cover;
+    background-position: center 10%, left;
+}
+
+.rightPanel{
+    flex: 5;
+    display: flex;
+    background-color: pink;
+    background: linear-gradient(to bottom, transparent, mistyrose 75%),
+                linear-gradient(to left, transparent, mistyrose 99%), url("levi.gif");
+    background-size: cover;
+}
+
+.logInContainer{
+    background-color: powderblue;
+    height: 400px;
+    width: 600px;
+    border-radius: 25px;
+    margin: auto;
+    margin-right: 35px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+.RegisterContainer{
+    background-color: powderblue;
+    height: 400px;
+    width: 600px;
+    border-radius: 25px;
+    margin: auto;
+    margin-left: 35px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+.inputField{
+    width: 50%;
+    height: 35px;
+    background-color: white;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    margin-right: 180px;
+    margin: 10px;
+}
+
+.searchBarInput{
+    border: none;
+    width: 90%;
+    margin-left: 10px;
+    font-size: 15px;
+}
+
+.searchBarInput:focus{
+    outline: none;
+}
+
+.loginTitle{
+    font-size: 35px;
+    margin: 10px;
+}
+
+.forgotPassword{
+    margin: 10px;
+    font-size: 15px;
+}
+
+.logInButton{
+    display: flex;
+    margin: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    width: 100px;
+    height: 30px;
+    border: none;
+    align-items: center;
+    cursor: pointer;
+}

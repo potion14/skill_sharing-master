@@ -1,0 +1,8 @@
+.chaptersListItem {
+    font-size: large;
+}
+
+.chaptersListPressedItem {
+    font-size: large;
+    font-weight: bold;
+}

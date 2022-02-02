@@ -1,0 +1,16 @@
+.wrapper {
+    background-color: rgb(230, 210, 210);
+    margin: 4px;
+    padding: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    width: 15rem;
+}
+
+.wrapper:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.wrapper:hover > a {
+    font-weight: bold;
+    cursor: pointer;
+}

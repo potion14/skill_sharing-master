@@ -1,0 +1,39 @@
+.ad{
+    width: 100%;
+    background-color: pink;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.adImg{
+    width: 60%;
+    opacity: 60%;
+}
+
+.adText{
+    display: flex;
+    padding: 5px;
+    font-size: 20px;
+    font-style: italic;
+    color: white;
+}
+
+.adTitle{
+    padding: 5px;
+    font-weight: 600;
+    font-size: 35px;
+    color: white;
+}
+
+.adTextContainer{
+    position: absolute;
+    margin-right: 25%;
+    margin-bottom: 18%;
+    height: 300px;
+    width: 600px;
+    background-color: rgb(180, 125, 125);
+    border-radius: 15px;
+    opacity: 90%;
+    padding: 20px;
+}

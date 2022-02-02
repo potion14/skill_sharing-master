@@ -1,0 +1,29 @@
+.visually-hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+.searchBar{
+    width: 100%;
+    height: 30px;
+    background-color: white;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    margin-right: 180px;
+}
+
+.searchBarInput{
+    border: none;
+    width: 90%;
+    margin-left: 10px;
+}
+
+.searchBarInput:focus{
+    outline: none;
+}

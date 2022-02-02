@@ -1,0 +1,91 @@
+.mainContainer {
+    height: calc(100vh - 80px);
+    display: flex;
+}
+
+.leftPanel {
+    flex: 1.5;
+    background-color: #fff;
+}
+
+.middlePanel {
+    flex: 3;
+    background-color: rgb(235, 220, 220);
+    overflow-y: scroll;
+    padding: 1rem;
+    margin: 10px;
+}
+
+::-webkit-scrollbar-track{
+    background-color: #dacbcb;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.rightPanel {
+    flex: 1;
+    background-color: #fff;
+}
+
+.chaptersList {
+    list-style: circle;
+    margin: 1rem;
+}
+
+.chaptersList li{
+    margin-left: -15px;
+    margin-bottom: 6px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.chaptersContainer {
+    background-color: rgb(243, 237, 237);
+    float: right;
+    margin: 3rem;
+    margin-bottom: 0.5rem;
+    width: 20rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    padding: 15px;
+}
+
+.chaptersLabel {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.verticalSeparator {
+    height: calc(100vh - 100px);
+    border-left: 1px solid gray;
+    float: right;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.verticalSeparatorR {
+    height: calc(100vh - 100px);
+    border-left: 1px solid gray;
+    float: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.chapterTitle {
+    font-size: 28px;
+    font-weight: bold;
+    margin-left: 1rem;
+    text-transform: capitalize;
+}
+
+.chapterContent {
+    background-color: rgb(243, 237, 237);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.chaptersList li:hover,
+.chaptersList li:active {
+  color: #160505;
+  font-weight: bold;
+}

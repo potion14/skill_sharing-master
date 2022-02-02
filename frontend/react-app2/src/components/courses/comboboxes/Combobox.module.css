@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap');
+
+.header a {
+    text-decoration: none;
+    font-size: 1.5rem;
+    color: #000000;
+}
+
+.header a:hover,
+.header a:active,
+.header a.active {
+    color: white;
+}
+
+.accountButtonWrapper {
+    background-color: transparent;
+    position: relative;
+}
+
+.dropdownMenu {
+    position: absolute;
+    padding: 10px;
+    top: calc(100% + 10px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 150ms ease-in-out, transform 150ms ease-in-out;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: #eedddd;
+    pointer-events: none;
+}
+
+.span:hover {
+    cursor: pointer;
+}
+
+.profileButton {
+    font-family: 'Oswald', sans-serif;
+    font-size: inherit;
+    color: #000000;
+    cursor: pointer;
+    border: transparent;
+    background: transparent;
+    text-decoration: none;
+    font-size: 1.5rem;
+}
+.profileButton:hover {
+    color: white;
+}
+.accountButtonWrapper > .profileButton:focus {
+    color: white;
+}
+
+.accountButtonWrapper > .profileButton:focus + .dropdownMenu {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.dropdownMenu a:hover {
+    color: rgb(156, 143, 143);
+    pointer-events: auto;
+}
+
+.dropdownMenu > a {
+    color: black;
+    cursor: pointer;
+}
+
+.dropdownMenu hr {
+    border: black;
+}
+
+.CoCreatorsContainer {
+    background-color: rgb(236, 226, 226);
+    margin-top: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) inset;
+    min-height: 5rem;
+    display: flex;
+    padding: .5rem;
+    width: 30rem;
+}
+
+.container {
+    margin-right: 2rem;
+}
+
+.container2 {
+    display: flex;
+    flex-direction: column;
+    padding: .5rem;
+}
+
+.loadingContainer {
+    display: flex;
+    justify-content: space-around;
+}
+
+.loadingImage {
+    content: url('../../../assets/giphy.gif');
+    height: 15rem;
+}
