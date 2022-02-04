@@ -77,11 +77,11 @@ class CourseSerializer(serializers.ModelSerializer):
             return True
 
         for participant in obj.participants.all():
-            if participant.participant == user:
+            if participant.participant == user and participant.is_active is True:
                 return True
 
         for co_creator in obj.co_creators.all():
-            if co_creator.co_creator == user:
+            if co_creator.co_creator == user and co_creator.is_active is True:
                 return True
 
         return False
@@ -93,11 +93,11 @@ class CourseSerializer(serializers.ModelSerializer):
             return False
 
         for participant in obj.participants.all():
-            if participant.participant == user:
+            if participant.participant == user and participant.is_active is False:
                 return False
 
         for co_creator in obj.co_creators.all():
-            if co_creator.co_creator == user:
+            if co_creator.co_creator == user and co_creator.is_active is False:
                 return False
 
         if user.points >= obj.price:
@@ -141,7 +141,7 @@ class UserCourseRatingSerializer(serializers.ModelSerializer):
 
     def get_author(self, obj):
         from apps.api.v1.users.serializers import UserSerializer
-        serializer = UserSerializer(obj.creator)
+        serializer = UserSerializer(obj.author)
         return serializer.data
 
 
@@ -155,7 +155,7 @@ class CourseChapterCommentSerializer(serializers.ModelSerializer):
             "created_at",
         ]
         model = models.CourseChapterComment
-        fields = ['id', 'chapter', 'content', 'replies', 'author',  "created_at", "reply_to"]
+        fields = ['id', 'chapter', 'content', 'replies', 'author', "created_at", "reply_to"]
 
     def get_author(self, obj):
         from apps.api.v1.users.serializers import UserSerializer
@@ -164,7 +164,6 @@ class CourseChapterCommentSerializer(serializers.ModelSerializer):
 
 
 class CourseSubCategorySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = models.CourseSubcategory
         fields = '__all__'
@@ -177,11 +176,7 @@ class CategorySerializer(serializers.ModelSerializer):
         model = models.CourseMainCategory
         fields = ['id', 'name', 'subcategories']
 
-
     def get_subcategories(self, obj):
         chapters = obj.subcategories.all()
         serializer = CourseSubCategorySerializer(chapters, many=True)
         return serializer.data
-
-
-

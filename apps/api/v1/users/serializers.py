@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from apps.users.models import CustomUser as User, UserRating
-from apps.users.models import CourseParticipant
+from apps.users.models import CourseParticipant, CourseCoCreator
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -20,6 +20,13 @@ class CourseParticipantSerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseParticipant
         fields = ['id', 'participant', 'course',  'is_active']
+
+
+class CourseCoCreatorSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CourseCoCreator
+        fields = ['id', 'course',  'co_creator', 'is_active']
 
 
 class UserRatingSerializer(serializers.ModelSerializer):

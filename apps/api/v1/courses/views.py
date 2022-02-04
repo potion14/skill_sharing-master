@@ -172,6 +172,9 @@ class CourseRatingsViewSet(viewsets.ModelViewSet):
         try:
             with transaction.atomic():
                 course = Course.objects.filter(id=course_id).first()
+                participant = course.participants.filter(participant=user).first()
+                participant.is_active = False
+                participant.save()
                 course_creator = course.creator
                 points_for_activity_co = CourseRatingSystem.objects.filter(
                     action=int(CourseRatingSystem.ACTIONS.new_rating_co)).first()

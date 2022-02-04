@@ -61,7 +61,8 @@ export default function UserCoursesList(props) {
                 title={course.title}
                 buttonText={props.buttonContent}
                 sendData = {getData}
-                page={props.page}/>) : 
+                page={props.page}
+                rating={course.rating}/>) : 
                 <div className={classes.loadingWrapper}><div className={classes.loading}></div></div>
                 }
             </div> : null
@@ -88,7 +89,8 @@ export default function UserCoursesList(props) {
             title={course.title}
             buttonText={props.buttonContent}
             sendData = {getData}
-            page={props.page}/>) : 
+            page={props.page}
+            rating={course.rating}/>) : 
             <div className={classes.loadingWrapper}><div className={classes.loading}></div></div>
             }
         </div> : null

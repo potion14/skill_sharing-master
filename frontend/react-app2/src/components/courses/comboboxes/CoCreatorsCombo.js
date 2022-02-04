@@ -7,6 +7,7 @@ import CoCreatorsList2Element from './CoCreatorsList2Element';
 export default function CoCreatorsCombo(props) {
     const [comboUsers, setUsers] = useState();
     const [selectedUsers, setSelectedUsers] = useState([]);
+    const [selectedUsersIds, setIds] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const url = 'http://127.0.0.1:8000/api/v1/users'
@@ -27,18 +28,24 @@ export default function CoCreatorsCombo(props) {
     
     function getSelectedUser(user) {
         setSelectedUsers(prevState => ([...prevState, user]))
+        setIds(prevState => ([...prevState, user.id]))
+        console.log("usersi: ", selectedUsersIds)
     }
 
     function removeSelectedUser(user) {
         var array = [...selectedUsers]
-        var index = array.indexOf(user)
+        var idsarray = [...selectedUsersIds]
+        var index = array.findIndex(object => object.email === user.email)
         if (index !== -1) {
             array.splice(index, 1);
             setSelectedUsers(array)
+            idsarray.splice(index, 1);
+            setIds(idsarray)
           }
+          console.log("usersi: ", selectedUsersIds)
     }
 
-    props.getData(selectedUsers);
+    props.getData(selectedUsersIds);
 
     if (loading === true) return (<div className={classes.loadingContainer}>
             <div className={classes.loadingImage}/>
@@ -52,14 +59,16 @@ export default function CoCreatorsCombo(props) {
                         <button className={classes.profileButton} data-dropdown-button type='button'>Select CoCreator</button>
                         <div className={classes.dropdownMenu}>
                             {
-                                comboUsers.map((e, index) => <CoCreatorsListElement getData={getSelectedUser} key={index} user={e.email} id={index} ></CoCreatorsListElement>)
+                                comboUsers.map((e, index) => <CoCreatorsListElement getData={getSelectedUser}
+                                key={index} user={e} id={index} ></CoCreatorsListElement>)
                             }
                         </div>
                     </div>
                 </div>
                 <div className={classes.container2}>
                     {
-                        selectedUsers.map((e, index) => <CoCreatorsList2Element sendedFunction={removeSelectedUser} user={e} key={index}></CoCreatorsList2Element>)
+                        selectedUsers.map((e, index) => <CoCreatorsList2Element sendedFunction={removeSelectedUser}
+                        user={e} key={index}></CoCreatorsList2Element>)
                     }
                 </div>
             </div>

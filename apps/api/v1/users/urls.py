@@ -1,7 +1,8 @@
 from django.conf.urls import url
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from .views import UserViewSet, CourseParticipantsList, CreateCourseParticipant, UserRatingList, UserPointsView
+from .views import UserViewSet, CourseParticipantsList, CreateCourseParticipant, UserRatingList, UserPointsView, \
+    CreateCourseCoCreator
 
 app_name = 'users'
 
@@ -14,6 +15,7 @@ urlpatterns = [
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
     url(r'^course/(?P<course_pk>\d+)/participants/$', CourseParticipantsList.as_view(), name="course_participants"),
     url(r'^new_course_participant/', CreateCourseParticipant.as_view(), name="new_course_participant"),
+    url(r'^new_course_co_creator/', CreateCourseCoCreator.as_view(), name="new_course_co_creator"),
     url(r'^my_ratings/', UserRatingList.as_view(), name="my_ratings"),
     url(r'^my_points/', UserPointsView.as_view(), name="my_points")
 ]

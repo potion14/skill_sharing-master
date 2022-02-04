@@ -43,7 +43,7 @@ function NewCourseForm() {
                 email: localStorage.getItem('email'),
                 password: localStorage.getItem('password')
             }});
-            console.log(newCourse);
+            //console.log(newCourse);
 
             axios.get('http://127.0.0.1:8000/api/v1/courses/all_courses', {
                 auth: {
@@ -54,7 +54,7 @@ function NewCourseForm() {
                 })
                 .then(res => {
                     SetId(res.data.at(-1).id);
-                    console.log("aktualne id", res.data.at(-1).id)
+                    //console.log("aktualne id", res.data.at(-1).id)
                 })
 
             document.getElementById("form").reset();
@@ -86,20 +86,20 @@ function NewCourseForm() {
                 }
             })
             .then(res => {
-                console.log("res.data: ", res.data)
+                //console.log("res.data: ", res.data)
                 SetChapters({
                     list: res.data
                 });
             });
             
-            console.log("chapters: ", chapters.list);
+            //console.log("chapters: ", chapters.list);
             document.getElementById("form").reset();
         }
         SetTitleSetState(true);
     }
 
     function setCoCreators(array) {
-        //console.log("array na samej górze: ", array)
+        console.log("array na samej górze: ", array)
         setCo(array);
     }
 

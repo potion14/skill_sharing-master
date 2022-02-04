@@ -9,12 +9,13 @@ export default function CommentsLayout(props) {
     const [comments, setC] = useState([]);
     const [loading, setLoading] = useState(true);
     const [id, setId] = useState(props.chapterId);
+    const [stop, setStop] = useState(false);
     
     //console.log("chapterId: ", props.chapterId)
 
     useEffect(() => {
         setId(props.chapterId)
-        if (comments.length === 0) getData(id)
+        if (comments.length === 0 && id !== null && stop === false) getData(id)
         console.log("ustawione w commentLayout id: ", id)
         console.log("comments: ", comments)
     }, [getData]) //problematic point (, [])
@@ -29,10 +30,11 @@ export default function CommentsLayout(props) {
                 email: localStorage.getItem('email'),
                 password: localStorage.getItem('password')
             }}).then(res => {
-                console.log("axios get")
+                //console.log("axios get")
                 setC(res.data);
                 setLoading(false);
                 setId(null)
+                if (comments.length === 0 && id !== null) setStop(true)
             })
     }
 

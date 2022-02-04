@@ -19,7 +19,7 @@ urlpatterns = [
     path('', include(router.urls)),
     url(r'^my_courses', MyCoursesList.as_view(), name="my_courses"),
     url(r'^my-started-courses', StartedCoursesList.as_view(), name='started_courses'),
-    url(r'^top-courses-ranking', TopCoursesRanking.as_view(), name='started_courses'),
+    url(r'^top-courses-ranking', TopCoursesRanking.as_view(), name='top_courses'),
     url(r'^subcategories', CourseSubCategoryList.as_view(), name='subcategories'),
     url(r'^main_categories', CourseCategoryList.as_view(), name='main_categories'),
     url(r'^course-visibility', CourseVisibilityList.as_view(), name='course-visibility'),

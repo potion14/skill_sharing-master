@@ -2,13 +2,13 @@ import classes from './Combobox.module.css';
 
 export default function CoCreatorsListElement(props) {
 
-    function handleClick(email, event) {
+    function handleClick(user, event) {
         event.preventDefault();
-        props.getData(email);
+        props.getData(user);
         // console.log("kliknięcie: ", email)
     }
 
     return (
-        <a onClick={(e) => handleClick(props.user, e)}>{props.user}</a>
+        <a onClick={(e) => handleClick(props.user, e)}>{props.user.email}</a>
     )
 }

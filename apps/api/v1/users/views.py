@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from apps.courses.models import Course
 from apps.users.models import CustomUser as User, CourseParticipant, CourseCoCreator, UserRating
-from .serializers import UserSerializer, CourseParticipantSerializer, UserRatingSerializer
+from .serializers import UserSerializer, CourseParticipantSerializer, UserRatingSerializer, CourseCoCreatorSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -58,6 +58,18 @@ class CreateCourseParticipant(generics.CreateAPIView):
                         points_for_activity_cc = points_for_activity_cc.rating
                     user_co_creator.points += points_for_activity_cc
                     user_co_creator.save()
+        except Exception as e:
+            raise APIException(str(e))
+
+
+class CreateCourseCoCreator(generics.CreateAPIView):
+    serializer_class = CourseCoCreatorSerializer
+    queryset = CourseCoCreator.objects.all()
+
+    def perform_create(self, serializer):
+        try:
+            with transaction.atomic():
+                serializer.save()
         except Exception as e:
             raise APIException(str(e))
 

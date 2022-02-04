@@ -1,7 +1,9 @@
-import classes from './UserProfileLayout.module.css'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import UserCoursesList from './userCourses/UserCoursesList';
+import classes from './UserProfileLayout.module.css';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import UserCoursesList from '../userCourses/UserCoursesList';
+import DeleteModal from '../userCourses/DeleteModal';
+import PointsHistoryLayout from './PointsHistoryLayout';
 
 function UserProfileLayout() {
 
@@ -9,6 +11,8 @@ function UserProfileLayout() {
     const [isLoading, setIsLoading] = useState(true);
     const [cardId, setCardId] = useState(null);
     const [pressedSort, setPS] = useState('none');
+    const [modal, setModal] = useState(false);
+    const [refresh, setRefresh] = useState();
 
     useEffect(() => {
         const url = 'http://127.0.0.1:8000/api/v1/courses/user_courses/' + localStorage.getItem('UserId');
@@ -28,7 +32,21 @@ function UserProfileLayout() {
 
     function getId(id) {
         setCardId(id)
-        console.log("id: ", id)
+        setModal(true)
+        //console.log("id: ", id)
+    }
+
+    function onCloseModal(id, buttonType) {
+        if (buttonType === 'confirm')
+        {
+            setModal(false)
+            const array = [...courses]
+            const index = array.findIndex(item => item.id === id)
+            if (index !== -1) {
+                array.splice(index, 1)
+                setCourses(array)
+            }
+        } else setModal(false)
     }
 
     return (
@@ -61,9 +79,11 @@ function UserProfileLayout() {
             </div>
             <div className={classes.rightPanel}>
                 <div className={classes.optionsContainer}>
-                    some options
+                    <button>User points history</button>
+                    <PointsHistoryLayout />
                 </div>
             </div>
+            {modal && <DeleteModal type="userProfile" cardId={cardId} closeModal={onCloseModal}/>}
         </div>
     )
 }

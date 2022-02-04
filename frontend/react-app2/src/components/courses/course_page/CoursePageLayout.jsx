@@ -15,11 +15,12 @@ class CoursePageLayout extends Component {
             title: null,
             pressedCourseId: props.courseId,
             chapterId: null,
-            rating: 0
+            rating: 0,
+            ratingTekst: ""
         }
         console.log("CoursePageLayout pressedCourseID: ", this.state.pressedCourseId)
         this.handleClick = this.handleClick.bind(this);
-        this.handleRating = this.handleRating.bind(this);
+        //this.handleRating = this.handleRating.bind(this);
     }
 
     handleClick(e, id) {
@@ -60,7 +61,8 @@ class CoursePageLayout extends Component {
         const url1 = 'http://127.0.0.1:8000/api/v1/courses/course/' + this.state.pressedCourseId + '/ratings/'
         if (this.state.rating > 0) axios.post(url1, {
             course: this.state.pressedCourseId,
-            rating: this.state.rating
+            rating: this.state.rating,
+            content: this.state.ratingTekst
         }, {
             auth: {
                 username: localStorage.getItem('username'),
@@ -72,10 +74,10 @@ class CoursePageLayout extends Component {
         })
     }
 
-    handleRating(r) {
-        //console.log("parrent rating: ", r);
-        this.setState({rating: r});
-    }
+    // handleRating(r, rt) {
+    //     //console.log("parrent rating: ", r);
+    //     this.setState({rating: r, ratingTekst: rt});
+    // }
 
     render() {
         return (
@@ -90,7 +92,6 @@ class CoursePageLayout extends Component {
                             <li key={index} onClick={(e) => {this.handleClick(e, index)}}>{t.title}</li>)}
                     </ul>
                 </div>
-                <Raiting getRating={this.handleRating} />
             </div>
             <div className={classes.middlePanel}>
                 <label className={classes.chapterTitle}>{this.state.title}</label>

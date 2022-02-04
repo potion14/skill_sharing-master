@@ -55,7 +55,7 @@
     background-color: #fff;
     width: 10rem;
     height: 10rem;
-    background: url('niezle.PNG');
+    background: url('../../../assets/niezle.PNG');
     background-size: 11.2rem;
     background-position: center;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6) inset;
