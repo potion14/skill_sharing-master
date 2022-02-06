@@ -74,7 +74,6 @@
     font-size: 28px;
     font-weight: bold;
     margin-left: 1rem;
-    text-transform: capitalize;
 }
 
 .chapterContent {
@@ -99,3 +98,29 @@
     width: 100%;
     resize: none;
   }
+
+.titles {
+    display: flex;
+    flex-direction: column;
+}
+
+.titles div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.courseTitle {
+    font-size: 3.5rem;
+    font-weight: bold;
+}
+
+.creator {
+    text-decoration: underline;
+    font-size: 1.2rem;
+    height: 1.5rem;
+}
+
+.creator:hover {
+    color: rgb(114, 107, 107);
+    cursor: pointer;
+}

@@ -9,6 +9,7 @@ import Course from './pages/Course';
 import UserProfile from './pages/UserProfile';
 import EditCourse from './pages/EditCourse';
 import AllCoursesPage from './pages/AllCoursesPage';
+import OtherUserProfile from './components/layout/UserProfile/OtherUserProfile'
 import { connect } from 'react-redux';
 import * as actions from './store/actions/auth';
 import { Component } from 'react';
@@ -45,6 +46,9 @@ class App extends Component {
       </Route>
       <Route path='/user-profile'>
         <UserProfile />
+      </Route>
+      <Route path='/user'>
+        <OtherUserProfile />
       </Route>
     </Switch>
   </Layout>;

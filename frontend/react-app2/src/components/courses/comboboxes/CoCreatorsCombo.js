@@ -5,10 +5,10 @@ import CoCreatorsListElement from './CoCreatorsListElement';
 import CoCreatorsList2Element from './CoCreatorsList2Element';
 
 export default function CoCreatorsCombo(props) {
-    const [comboUsers, setUsers] = useState();
+    const [comboUsers, setUsers] = useState([]);
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [selectedUsersIds, setIds] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const url = 'http://127.0.0.1:8000/api/v1/users'
 
@@ -45,7 +45,7 @@ export default function CoCreatorsCombo(props) {
           console.log("usersi: ", selectedUsersIds)
     }
 
-    props.getData(selectedUsersIds);
+    props.getData(selectedUsers);
 
     if (loading === true) return (<div className={classes.loadingContainer}>
             <div className={classes.loadingImage}/>

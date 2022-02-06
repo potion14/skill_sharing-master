@@ -1,4 +1,4 @@
-import NewCourseForm from "../components/courses/NewCourseForm";
+import NewCourseForm from "../components/courses/NewCourse/NewCourseForm";
 
 function NewCourse() {
     return (

@@ -30,6 +30,7 @@
     flex-direction: column;
     background-color: #eedddd;
     pointer-events: none;
+    z-index: 10;
 }
 
 .span:hover {
@@ -81,6 +82,7 @@
     display: flex;
     padding: .5rem;
     width: 30rem;
+    flex-direction: column;
 }
 
 .container {

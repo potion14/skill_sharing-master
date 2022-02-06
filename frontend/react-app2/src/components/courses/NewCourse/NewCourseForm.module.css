@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap');
 
 .wrapper {
-  height: calc(100vh - 80px);
+  min-height: calc(100vh - 80px);
   display: flex;
 }
 
@@ -125,4 +125,35 @@
 .chaptersList li:active {
   color: #160505;
   font-weight: bold;
+}
+
+.AlertWindow {
+  position: absolute;
+  top: 15rem;
+  right: 10rem;
+  width: 10rem;
+  height: 4rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  background-color: #dacbcb;
+  -webkit-animation: cssAnimation 5s forwards;
+  animation: cssAnimation 5s forwards;
+  display: flex;
+  align-items: center;
+}
+
+.AlertWindow span {
+  margin: auto;
+  text-align: center;
+}
+
+@keyframes cssAnimation {
+  0%   {opacity: 1;}
+  90%  {opacity: 1;}
+  100% {opacity: 0;}
+}
+
+@-webkit-keyframes cssAnimation {
+  0%   {opacity: 1;}
+  90%  {opacity: 1;}
+  100% {opacity: 0;}
 }

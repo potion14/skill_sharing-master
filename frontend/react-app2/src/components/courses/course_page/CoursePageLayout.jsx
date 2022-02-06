@@ -3,6 +3,8 @@ import { Component } from 'react';
 import axios from "axios";
 import CommentsLayout from "../../layout/comments/CommentsLayout";
 import Raiting from "./Raiting";
+import { Link, useLocation, useParams } from 'react-router-dom'
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 
 class CoursePageLayout extends Component {
 
@@ -16,9 +18,12 @@ class CoursePageLayout extends Component {
             pressedCourseId: props.courseId,
             chapterId: null,
             rating: 0,
-            ratingTekst: ""
+            ratingTekst: "",
+            course: [],
+            creator: "loading",
+            creatorId: null
         }
-        console.log("CoursePageLayout pressedCourseID: ", this.state.pressedCourseId)
+        //console.log("CoursePageLayout pressedCourseID: ", this.state.pressedCourseId)
         this.handleClick = this.handleClick.bind(this);
         //this.handleRating = this.handleRating.bind(this);
     }
@@ -53,7 +58,21 @@ class CoursePageLayout extends Component {
         //console.log("chaptery w kliknietym kursie: ", this.state.chapters)
         //console.log("chapter: ", this.state.chapterId)
         })
-        //localStorage.removeItem("pressedCourseID");
+        axios.get('http://127.0.0.1:8000/api/v1/courses/all_courses/' + this.state.pressedCourseId, {
+            auth: {
+              username: localStorage.getItem('username'),
+              email: localStorage.getItem('email'),
+              password: localStorage.getItem('password')
+              }
+          })
+          .then(res => {
+          this.setState({
+              course: res.data,
+              creator: res.data.creator,
+              creatorId: res.data.creator.id
+          });
+          //console.log("creator: ", this.state.creator)
+          })
     }
 
     componentWillUnmount() {
@@ -74,11 +93,6 @@ class CoursePageLayout extends Component {
         })
     }
 
-    // handleRating(r, rt) {
-    //     //console.log("parrent rating: ", r);
-    //     this.setState({rating: r, ratingTekst: rt});
-    // }
-
     render() {
         return (
         <div className={classes.mainContainer}>
@@ -94,10 +108,16 @@ class CoursePageLayout extends Component {
                 </div>
             </div>
             <div className={classes.middlePanel}>
-                <label className={classes.chapterTitle}>{this.state.title}</label>
+                <div className={classes.titles}>
+                    <div>
+                        <label className={classes.courseTitle}>{this.state.course.title}</label>
+                        <Link to={{ pathname: '/user', state: this.state }} className={classes.creator}>{this.state.creator.email}</Link>
+                    </div>
+                    <label className={classes.chapterTitle}>{this.state.title}</label>
+                </div>
                 <hr></hr>
                 <div className={classes.chapterContent}>
-                    {this.state.currentContent}
+                    {ReactHtmlParser(this.state.currentContent)}
                 </div>
                 <CommentsLayout chapterId={this.state.chapterId} />
             </div>
