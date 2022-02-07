@@ -10,18 +10,23 @@ export default function CommentsLayout(props) {
     const [loading, setLoading] = useState(true);
     const [id, setId] = useState(props.chapterId);
     const [stop, setStop] = useState(false);
+    const url = 'http://127.0.0.1:8000/api/v1/courses/course/chapter/' + props.chapterId + '/comments';
     
     //console.log("chapterId: ", props.chapterId)
 
     useEffect(() => {
-        setId(props.chapterId)
+        if (props.chapterId !== id) {
+            setId(props.chapterId)
+            setC([])
+            setStop(false)
+            const url = 'http://127.0.0.1:8000/api/v1/courses/course/chapter/' + id + '/comments';
+        }
         if (comments.length === 0 && id !== null && stop === false) getData(id)
         console.log("ustawione w commentLayout id: ", id)
         console.log("comments: ", comments)
-    }, [getData]) //problematic point (, [])
+    }, [getData, id]) //problematic point (, [])
 
     function getData(id) {
-        const url = 'http://127.0.0.1:8000/api/v1/courses/course/chapter/' + id + '/comments'
         console.log(url)
         console.log("getData")
         axios.get(url, {
@@ -30,11 +35,12 @@ export default function CommentsLayout(props) {
                 email: localStorage.getItem('email'),
                 password: localStorage.getItem('password')
             }}).then(res => {
-                //console.log("axios get")
+                console.log("axios get")
                 setC(res.data);
                 setLoading(false);
-                setId(null)
+                //setId(null)
                 if (comments.length === 0 && id !== null) setStop(true)
+                if (comments.length !== 0 && id !== null) setStop(true)
             })
     }
 

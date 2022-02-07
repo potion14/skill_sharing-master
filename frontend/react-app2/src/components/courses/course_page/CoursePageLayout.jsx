@@ -77,20 +77,20 @@ class CoursePageLayout extends Component {
 
     componentWillUnmount() {
         //console.log("parrent rating in cdm: ", this.state.rating);
-        const url1 = 'http://127.0.0.1:8000/api/v1/courses/course/' + this.state.pressedCourseId + '/ratings/'
-        if (this.state.rating > 0) axios.post(url1, {
-            course: this.state.pressedCourseId,
-            rating: this.state.rating,
-            content: this.state.ratingTekst
-        }, {
-            auth: {
-                username: localStorage.getItem('username'),
-                email: localStorage.getItem('email'),
-                password: localStorage.getItem('password')
-            }
-        }).catch(err => {
-            //setAlert(true)
-        })
+        //const url1 = 'http://127.0.0.1:8000/api/v1/courses/course/' + this.state.pressedCourseId + '/ratings/'
+        // if (this.state.rating > 0) axios.post(url1, {
+        //     course: this.state.pressedCourseId,
+        //     rating: this.state.rating,
+        //     content: this.state.ratingTekst
+        // }, {
+        //     auth: {
+        //         username: localStorage.getItem('username'),
+        //         email: localStorage.getItem('email'),
+        //         password: localStorage.getItem('password')
+        //     }
+        // }).catch(err => {
+        //     //setAlert(true)
+        // })
     }
 
     render() {

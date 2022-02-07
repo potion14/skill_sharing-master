@@ -25,6 +25,7 @@ export default function UserCoursesList(props) {
             SetSCS(courses)
         }
         console.log("got id: ", props.pressedFilterId)
+        console.log("courses ", props.courses)
     })
 
     function getData(id) {

@@ -60,18 +60,6 @@ function NewCourseForm() {
                 password: localStorage.getItem('password')
             }});
 
-            cocreators.forEach(element => {
-                axios.patch('http://127.0.0.1:8000/api/v1/users/new_course_co_creator', {
-                    email: element.email,
-                    points: element.points
-                }, {
-                auth: {
-                    username: localStorage.getItem('username'),
-                    email: localStorage.getItem('email'),
-                    password: localStorage.getItem('password')
-                }});
-            });
-
             await axios.get('http://127.0.0.1:8000/api/v1/courses/all_courses', {
                 auth: {
                     username: localStorage.getItem('username'),
@@ -80,14 +68,27 @@ function NewCourseForm() {
                     }
                 })
                 .then(res => {
+                    //console.log("currentCourseId: ", currentCourseId)
+                    cocreators.forEach(element => {
+                        axios.post('http://127.0.0.1:8000/api/v1/new_course_co_creator/', {
+                            course: res.data.at(-1).id,
+                            co_creator: element.id,
+                            is_active: true
+                        }, {
+                        auth: {
+                            username: localStorage.getItem('username'),
+                            email: localStorage.getItem('email'),
+                            password: localStorage.getItem('password')
+                        }});
+                    });
+                    SetTitleSetState(true);
                     SetId(res.data.at(-1).id);
                     //console.log("aktualne id", res.data.at(-1).id)
                 })
             //console.log("to miejsce powinno się wywołać tylko wtedy, gdy wszystko jest uzupełnione, ", walidator)
-            SetTitleSetState(true);
+            //SetTitleSetState(true);
             document.getElementById("form").reset();
-            } 
-            
+            }
         } 
         else if (titleSet === true) {
             const enteredChapterTitle = chapterTitleInputRef.current.value;
