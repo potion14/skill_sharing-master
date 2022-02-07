@@ -5,6 +5,7 @@ import classes from './CommentsLayout.module.css';
 export default function NewComment(props) {
     const url = 'http://127.0.0.1:8000/api/v1/courses/course/chapter/' + props.chapterId + '/comments'
     const [commentContent, setCC] = useState("");
+    const [signal, setSignal] = useState(false)
 
     //console.log("chapterId: ", props.chapterId);
 
@@ -14,10 +15,10 @@ export default function NewComment(props) {
         console.log(commentContent)
     }
 
-    function handleClick(e) {
+    async function handleClick(e) {
         e.preventDefault();
         if (commentContent !== "") {
-            axios.post(url, {
+            await axios.post(url, {
                 chapter: props.chapterId,
                 content: commentContent,
                 author: localStorage.getItem("email")
@@ -26,7 +27,9 @@ export default function NewComment(props) {
                 username: localStorage.getItem('username'),
                 email: localStorage.getItem('email'),
                 password: localStorage.getItem('password')
-            }})
+            }}).then(setSignal(true))
+            props.newCommentAdded(signal)
+            setSignal(false)
         }
         setCC("")
     }

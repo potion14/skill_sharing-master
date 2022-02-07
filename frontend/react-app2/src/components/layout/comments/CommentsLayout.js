@@ -44,10 +44,15 @@ export default function CommentsLayout(props) {
             })
     }
 
+    function handleNewComment(signal) {
+        setC([])
+        setStop(false)
+    }
+
     return (
         <div>
             <div className={classes.mainWrapper}>
-                <NewComment chapterId={props.chapterId}/>
+                <NewComment chapterId={props.chapterId} newCommentAdded={handleNewComment}/>
             </div>
             <div>
             {
