@@ -42,16 +42,6 @@ export default function CategoriesCombo(props) {
             setLoading(false)
         });
     }, [])
-    
-    // function getSelectedElement(element, type) {
-    //     if (type === 'categories') {
-    //         setSelectedCategories(prevState => ([...prevState, element]))
-    //         //setIds(prevState => ([...prevState, user.id]))
-    //     } else {
-    //         setSelectedSubCategories(prevState => ([...prevState, element]))
-    //         //setIds(prevState => ([...prevState, user.id]))
-    //     }
-    // }
 
     function getSelectedElement(element, type) {
         if (type === 'categories') {
@@ -63,34 +53,12 @@ export default function CategoriesCombo(props) {
         }
     }
 
-    // function removeSelectedElement(element, type) {
-    //     if (type === 'categories') {
-    //         var array = [...selectedCategories]
-    //     //var idsarray = [...selectedUsersIds]
-    //     var index = array.findIndex(object => object.name === element.name)
-    //     if (index !== -1) {
-    //         array.splice(index, 1);
-    //         setSelectedCategories(array)
-    //         // idsarray.splice(index, 1);
-    //         // setIds(idsarray)
-    //       }
-    //     } else {
-    //         var array = [...selectedSubCategories]
-    //         //var idsarray = [...selectedUsersIds]
-    //         var index = array.findIndex(object => object.name === element.name)
-    //         if (index !== -1) {
-    //             array.splice(index, 1);
-    //             setSelectedSubCategories(array)
-    //             // idsarray.splice(index, 1);
-    //             // setIds(idsarray)
-    //         }
-    //     }
-    // }
-
     function removeSelectedElement(element, type) {
         if (type === 'categories') {
             setSelectedCategories([])
             setCategoryId(0)
+            setSelectedSubCategories([])
+            setSubCategoryId(0)
         } else {
             setSelectedSubCategories([])
             setSubCategoryId(0)
@@ -131,7 +99,8 @@ export default function CategoriesCombo(props) {
                         <button className={classes.profileButton} data-dropdown-button type='button'>Select SubCategory</button>
                         <div className={classes.dropdownMenu}>
                             {
-                                subcategories.map((e, index) => <CategoriesDropdownListElement getData={getSelectedElement}
+                                subcategories.filter(e => e.main_category === props.category_selected).map((e, index) => 
+                                <CategoriesDropdownListElement getData={getSelectedElement}
                                 key={index} category={e} id={index} type={props.type}></CategoriesDropdownListElement>)
                             }
                         </div>

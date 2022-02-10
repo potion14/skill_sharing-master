@@ -47,6 +47,8 @@ export default function EditMiniForm(props) {
             email: localStorage.getItem('email'),
             password: localStorage.getItem('password')
         }})
+        console.log("change detected miniform: ")
+        props.change(Math.random())
     }
 
     return (

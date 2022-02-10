@@ -1,5 +1,6 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
@@ -22,11 +23,27 @@ class CourseSubcategory(models.Model):
         return self.name
 
 
+class CourseManager(models.Manager):
+    def get_by_user_type(self, user):
+        queryset = self.get_queryset()
+        if not user:
+            return queryset.none()
+        else:
+            return Course.objects.filter(
+                Q(creator=user) | Q(co_creators__co_creator=user) | Q(visibility=Course.VISIBILITY.everyone) |
+                (Q(visibility__in=[Course.VISIBILITY.participants, Course.VISIBILITY.followers])
+                 & Q(participants__participant=user)) |
+                (Q(visibility=Course.VISIBILITY.followers) & (Q(creator__followers__follower=user)
+                                                              | Q(co_creators__co_creator__followers__follower=user)))
+            ).distinct()
+
+
 class Course(models.Model):
     VISIBILITY = Choices(
         (1, 'everyone', _('Everyone')),
         (2, 'participants', _('Participants')),
         (3, 'authors', _('Authors')),
+        (4, 'followers', _('Followers')),
     )
 
     title = models.CharField(max_length=256, default='New course')
@@ -39,11 +56,8 @@ class Course(models.Model):
     from apps.users.models import CustomUser as User
     creator = models.ForeignKey(User, verbose_name=_('Creator'),
                                 related_name='courses_created', on_delete=models.CASCADE)
-    price = models.IntegerField(_('Price'), default=10,
-                                validators=[
-                                     MaxValueValidator(200),
-                                     MinValueValidator(10)
-                                 ])
+
+    objects = CourseManager()
 
     def __str__(self):
         return self.title
@@ -56,6 +70,29 @@ class Course(models.Model):
         for co_creator in self.co_creators.all():
             co_creators.append(co_creator.co_creator)
         return co_creators
+
+    @property
+    def rating(self):
+        ratings = UserCourseRating.objects.filter(course_id=self.id)
+        rating_count = ratings.count()
+        rating_sum = 0
+
+        for rating in ratings:
+            rating_sum += rating.rating
+
+        if rating_sum:
+            return rating_sum // rating_count
+        else:
+            return 0
+
+    @property
+    def price(self):
+        return self.rating*3+20
+
+    @property
+    def visibility_name(self):
+        return self.VISIBILITY[self.visibility] if self.visibility in self.VISIBILITY else ''
+
 
 
 class CourseChapter(models.Model):
@@ -90,9 +127,10 @@ class CourseRatingSystem(models.Model):
         (3, 'new_participant_cc', _('Points for new participant for co-creators')),
         (4, 'new_participant_co', _('Points for new participant for course owner')),
         (5, 'new_rating_co', _('Points for new rating for course owner')),
-        (6, 'new_rating_co', _('Points for new rating for co-creator')),
+        (6, 'new_rating_cc', _('Points for new rating for co-creator')),
         (7, 'course_owner_activity_in_course',  _('New course owner activity in course')),
-        (8, 'co-creator_activity_in_course', _('New co-creator activity in course'))
+        (8, 'co-creator_activity_in_course', _('New co-creator activity in course')),
+        (9, 'new_follower', _('Points for new follower'))
     )
     action = models.IntegerField(_('Action'), choices=ACTIONS, unique=True)
     rating = models.IntegerField(_('Rating'), default=1,

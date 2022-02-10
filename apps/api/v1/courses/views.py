@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from apps.api.v1.courses.serializers import CourseSerializer, ChapterSerializer, CourseChapterCommentSerializer, \
     UserCourseRatingSerializer, CourseSubCategorySerializer, CategorySerializer
 from apps.courses.models import Course, CourseChapter, CourseChapterComment, UserCourseRating, CourseSubcategory, CourseMainCategory
+from apps.users.models import UserRating
 
 
 class CoursesViewSet(viewsets.ModelViewSet):
@@ -21,7 +22,7 @@ class CoursesViewSet(viewsets.ModelViewSet):
         if user_id:
             queryset = Course.objects.filter(Q(creator_id=user_id) | Q(co_creators__co_creator_id=user_id))
         else:
-            queryset = Course.objects.all()
+            queryset = Course.objects.get_by_user_type(self.request.user)
         return queryset
 
     def perform_create(self, serializer):
@@ -31,6 +32,23 @@ class CoursesViewSet(viewsets.ModelViewSet):
                 serializer.save(creator=user)
         except Exception as e:
             raise APIException(str(e))
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+        return context
+
+
+class FollowedUsersCoursesList(generics.ListAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        user_id = self.request.user.id
+        queryset = Course.objects.get_by_user_type(self.request.user).filter(creator__followers__follower_id=user_id)
+
+        return queryset
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -61,7 +79,7 @@ class StartedCoursesList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user_id = self.request.user.id
-        queryset = Course.objects.filter(Q(participants__participant_id=user_id))
+        queryset = Course.objects.get_by_user_type(self.request.user).filter(Q(participants__participant_id=user_id))
         return queryset
 
     def get_serializer_context(self):
@@ -77,7 +95,7 @@ class TopCoursesRanking(generics.ListCreateAPIView):
 
     def get_queryset(self):
         from django.db.models import Avg
-        queryset = Course.objects.annotate(course_rate=Avg('user_ratings__rating')).order_by('-course_rate')
+        queryset = Course.objects.get_by_user_type(self.request.user).annotate(course_rate=Avg('user_ratings__rating')).order_by('-course_rate')
         return queryset
 
     def get_serializer_context(self):
@@ -133,22 +151,28 @@ class CourseChapterCommentsViewSet(viewsets.ModelViewSet):
                 points_for_activity_co = CourseRatingSystem.objects.filter(
                     action=int(CourseRatingSystem.ACTIONS.new_comment_co)).first()
                 if points_for_activity_co is None:
-                    points_for_activity_co = 3
+                    points_for_activity_co = 3 + (course.rating*2)
                 else:
-                    points_for_activity_co = points_for_activity_co.rating
+                    points_for_activity_co = points_for_activity_co.rating + (course.rating*2)
                 course_creator.points += points_for_activity_co
                 course_creator.save()
-                course_co_creators = [co_creator.user for co_creator in
+                UserRating.objects.create(rating=points_for_activity_co,
+                                          action=CourseRatingSystem.ACTIONS.new_comment_co,
+                                          user=course_creator)
+                course_co_creators = [co_creator.co_creator for co_creator in
                                       CourseCoCreator.objects.filter(course=course)]
                 for user_co_creator in course_co_creators:
                     points_for_activity_cc = CourseRatingSystem.objects.filter(
                         action=int(CourseRatingSystem.ACTIONS.new_comment_cc)).first()
                     if points_for_activity_cc is None:
-                        points_for_activity_cc = 2
+                        points_for_activity_cc = 2 + (course.rating*2)
                     else:
-                        points_for_activity_cc = points_for_activity_cc.rating
+                        points_for_activity_cc = points_for_activity_cc.rating + (course.rating*2)
                     user_co_creator.points += points_for_activity_cc
                     user_co_creator.save()
+                    UserRating.objects.create(rating=points_for_activity_cc,
+                                              action=CourseRatingSystem.ACTIONS.new_comment_cc,
+                                              user=user_co_creator)
                 serializer.save(chapter_id=chapter_pk, author=user)
         except Exception as e:
             raise APIException(str(e))
@@ -179,12 +203,15 @@ class CourseRatingsViewSet(viewsets.ModelViewSet):
                 points_for_activity_co = CourseRatingSystem.objects.filter(
                     action=int(CourseRatingSystem.ACTIONS.new_rating_co)).first()
                 if points_for_activity_co is None:
-                    points_for_activity_co = 3
+                    points_for_activity_co = 3 + (course.rating*2)
                 else:
-                    points_for_activity_co = points_for_activity_co.rating
+                    points_for_activity_co = points_for_activity_co.rating + (course.rating*2)
                 course_creator.points += points_for_activity_co
                 course_creator.save()
-                course_co_creators = [co_creator.user for co_creator in
+                UserRating.objects.create(rating=points_for_activity_co,
+                                          action=CourseRatingSystem.ACTIONS.new_rating_co,
+                                          user=course_creator)
+                course_co_creators = [co_creator.co_creator for co_creator in
                                       CourseCoCreator.objects.filter(course=course)]
                 for user_co_creator in course_co_creators:
                     points_for_activity_cc = CourseRatingSystem.objects.filter(
@@ -195,7 +222,11 @@ class CourseRatingsViewSet(viewsets.ModelViewSet):
                         points_for_activity_cc = points_for_activity_cc.rating
                     user_co_creator.points += points_for_activity_cc
                     user_co_creator.save()
+                    UserRating.objects.create(rating=points_for_activity_cc,
+                                              action=CourseRatingSystem.ACTIONS.new_rating_cc,
+                                              user=user_co_creator)
                 serializer.save(course_id=course_id, author=user)
+                participant.delete()
         except Exception as e:
             raise APIException(str(e))
 
@@ -215,10 +246,9 @@ class CourseCategoryList(generics.ListCreateAPIView):
 class CourseVisibilityList(APIView):
     def get(self, request, *args, **kwargs):
         response = ({'id': key,
-                    'name': value} for key, value in Course.VISIBILITY())
+                    'name': value} for key, value in Course.VISIBILITY)
 
         return Response(response)
-
 
 
 

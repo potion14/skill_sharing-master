@@ -6,8 +6,9 @@ import CoCreatorsList2Element from './CoCreatorsList2Element';
 
 export default function CoCreatorsCombo(props) {
     const [comboUsers, setUsers] = useState([]);
-    const [selectedUsers, setSelectedUsers] = useState([]);
+    const [selectedUsers, setSelectedUsers] = useState(props.existingCoCreators);
     const [selectedUsersIds, setIds] = useState([]);
+    const [recievedCocreators, setRecieved] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const url = 'http://127.0.0.1:8000/api/v1/users'
@@ -15,20 +16,33 @@ export default function CoCreatorsCombo(props) {
     useEffect(() => {
         axios.get(url, {
             auth: {
-            username: localStorage.getItem('username'),
+            username: localStorage.getItem('username'), 
             email: localStorage.getItem('email'),
             password: localStorage.getItem('password')
             }
         })
         .then(res => {
             setUsers(res.data)
+            var array = [...res.data]
+            props.existingCoCreators.forEach(element => {
+                var index = array.findIndex(object => object.email === element.email)
+                array.splice(index, 1)
+                setUsers(array)
+            });
             setLoading(false)
         });
     }, [])
     
+    
+
     function getSelectedUser(user) {
         setSelectedUsers(prevState => ([...prevState, user]))
         setIds(prevState => ([...prevState, user.id]))
+        var array = [...comboUsers]
+        var index = array.findIndex(object => object.email === user.email)
+        array.splice(index, 1)
+        setUsers(array)
+        props.getData(selectedUsers);
         console.log("usersi: ", selectedUsersIds)
     }
 
@@ -40,12 +54,12 @@ export default function CoCreatorsCombo(props) {
             array.splice(index, 1);
             setSelectedUsers(array)
             idsarray.splice(index, 1);
-            setIds(idsarray)
+            setIds(idsarray);
+            setUsers(prevState => ([...prevState, user]))
           }
+          props.getData(selectedUsers);
           console.log("usersi: ", selectedUsersIds)
     }
-
-    props.getData(selectedUsers);
 
     if (loading === true) return (<div className={classes.loadingContainer}>
             <div className={classes.loadingImage}/>
@@ -60,15 +74,20 @@ export default function CoCreatorsCombo(props) {
                         <div className={classes.dropdownMenu}>
                             {
                                 comboUsers.map((e, index) => <CoCreatorsListElement getData={getSelectedUser}
-                                key={index} user={e} id={index} ></CoCreatorsListElement>)
+                                key={index} user={e} id={index} courseID={props.courseID}></CoCreatorsListElement>)
                             }
                         </div>
                     </div>
                 </div>
                 <div className={classes.container2}>
                     {
-                        selectedUsers.map((e, index) => <CoCreatorsList2Element sendedFunction={removeSelectedUser}
-                        user={e} key={index}></CoCreatorsList2Element>)
+                        props.existingCoCreators !== [] ?
+                        <div>
+                            {
+                                selectedUsers.map((e, index) => <CoCreatorsList2Element sendedFunction={removeSelectedUser}
+                                user={e} key={index} courseID={props.courseID}></CoCreatorsList2Element>)
+                            }
+                        </div> : null
                     }
                 </div>
             </div>

@@ -69,18 +69,18 @@ function NewCourseForm() {
                 })
                 .then(res => {
                     //console.log("currentCourseId: ", currentCourseId)
-                    cocreators.forEach(element => {
-                        axios.post('http://127.0.0.1:8000/api/v1/new_course_co_creator/', {
-                            course: res.data.at(-1).id,
-                            co_creator: element.id,
-                            is_active: true
-                        }, {
-                        auth: {
-                            username: localStorage.getItem('username'),
-                            email: localStorage.getItem('email'),
-                            password: localStorage.getItem('password')
-                        }});
-                    });
+                    // cocreators.forEach(element => {
+                    //     axios.post('http://127.0.0.1:8000/api/v1/new_course_co_creator/', {
+                    //         course: res.data.at(-1).id,
+                    //         co_creator: element.id,
+                    //         is_active: true
+                    //     }, {
+                    //     auth: {
+                    //         username: localStorage.getItem('username'),
+                    //         email: localStorage.getItem('email'),
+                    //         password: localStorage.getItem('password')
+                    //     }});
+                    //});
                     SetTitleSetState(true);
                     SetId(res.data.at(-1).id);
                     //console.log("aktualne id", res.data.at(-1).id)
@@ -160,9 +160,8 @@ function NewCourseForm() {
                         <label>Course Title</label>
                         <input type='text' required id='courseTitle' ref={courseTitleInputRef} />
                     </div>
-                    <CoCreatorsCombo getData={setCoCreators} />
-                    <CategoriesCombo getCategoriesData={setCategories} type='categories'/>
-                    <CategoriesCombo getCategoriesData={setSubCategories} type='subcategories'/>
+                    <CategoriesCombo getCategoriesData={setCategories} type='categories' category_selected='0'/>
+                    {category !== 0 ? <CategoriesCombo getCategoriesData={setSubCategories} type='subcategories' category_selected={category}/> : null}
                     <div className={classes.actions}>
                         <button>Add Course</button>
                     </div>
@@ -187,6 +186,7 @@ function NewCourseForm() {
                             onBlur={newContent => setContent(newContent)} 
                             onChange={newContent => {}}
                         />
+                        <CoCreatorsCombo getData={setCoCreators} existingCoCreators={[]} courseID={currentCourseId}/>
                     </div>
                     <div className={classes.actions}>
                         <button>Add Chapter</button>

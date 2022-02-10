@@ -26,9 +26,14 @@ export default function PointsHistoryLayout(props) {
     return(
         <div>
             {
-                loading === false ? <div>
+                loading === false ? <div className={classes.history}>
                     {pointsHistory.map((i, index) => 
-                    <div key={index}>{i}</div>)}
+                    <div className={classes.historyCard} key={index}>
+                        <span>{i.action}</span>
+                        <a>{i.rating}</a>
+                        <a>{i.created_at}</a>
+                        <hr />
+                    </div>)}
                 </div> : <div>loading..</div>
             }
         </div>

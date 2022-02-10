@@ -16,13 +16,16 @@ class CourseSerializer(serializers.ModelSerializer):
     user_can_edit = serializers.SerializerMethodField()
     user_can_view = serializers.SerializerMethodField()
     user_can_join = serializers.SerializerMethodField()
+    price = serializers.SerializerMethodField()
+    visibility_name = serializers.SerializerMethodField()
 
     class Meta:
         read_only_fields = [
             "created_at",
         ]
         model = models.Course
-        fields = ['id', 'title', 'category', 'created_at', 'creator', 'co_creators', 'chapters', 'main_category',
+        fields = ['id', 'title', 'category', 'created_at', 'creator', 'co_creators', 'visibility', 'visibility_name',
+                  'chapters', 'main_category',
                   'rating', 'rating_amount', 'user_can_edit', 'user_can_view', 'user_can_join', 'price']
 
     def get_creator(self, obj):
@@ -49,17 +52,7 @@ class CourseSerializer(serializers.ModelSerializer):
             return ''
 
     def get_rating(self, obj):
-        ratings = models.UserCourseRating.objects.filter(course_id=obj.id)
-        rating_count = ratings.count()
-        rating_sum = 0
-
-        for rating in ratings:
-            rating_sum += rating.rating
-
-        if rating_sum:
-            return rating_sum // rating_count
-        else:
-            return 0
+        return obj.rating
 
     def get_rating_amount(self, obj):
         rating_count = models.UserCourseRating.objects.filter(course_id=obj.id).count()
@@ -103,6 +96,12 @@ class CourseSerializer(serializers.ModelSerializer):
         if user.points >= obj.price:
             return True
 
+    def get_price(self, obj):
+        return obj.price
+
+    def get_visibility_name(self, obj):
+        return obj.visibility_name
+
 
 class ChapterSerializer(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(format='%m-%d-%Y', read_only=True)
@@ -131,6 +130,7 @@ class ChapterSerializer(serializers.ModelSerializer):
 class UserCourseRatingSerializer(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(format='%m-%d-%Y %H:%M', read_only=True)
     author = serializers.SerializerMethodField()
+    course = serializers.SerializerMethodField()
 
     class Meta:
         read_only_fields = [
@@ -143,6 +143,9 @@ class UserCourseRatingSerializer(serializers.ModelSerializer):
         from apps.api.v1.users.serializers import UserSerializer
         serializer = UserSerializer(obj.author)
         return serializer.data
+
+    def get_course(self, obj):
+        return obj.course.title
 
 
 class CourseChapterCommentSerializer(serializers.ModelSerializer):

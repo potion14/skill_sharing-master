@@ -2,7 +2,8 @@ from django.conf.urls import url
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from .views import CoursesViewSet, CourseChaptersViewSet, CourseChapterCommentsViewSet, MyCoursesList, \
-    CourseRatingsViewSet, StartedCoursesList, TopCoursesRanking, CourseSubCategoryList, CourseCategoryList, CourseVisibilityList
+    CourseRatingsViewSet, StartedCoursesList, TopCoursesRanking, CourseSubCategoryList, CourseCategoryList, \
+    CourseVisibilityList, FollowedUsersCoursesList
 
 app_name = 'courses'
 
@@ -23,4 +24,5 @@ urlpatterns = [
     url(r'^subcategories', CourseSubCategoryList.as_view(), name='subcategories'),
     url(r'^main_categories', CourseCategoryList.as_view(), name='main_categories'),
     url(r'^course-visibility', CourseVisibilityList.as_view(), name='course-visibility'),
+    url(r'^followed-users-courses', FollowedUsersCoursesList.as_view(), name='followed-users-courses'),
 ]

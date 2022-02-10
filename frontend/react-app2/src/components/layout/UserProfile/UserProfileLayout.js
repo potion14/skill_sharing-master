@@ -4,6 +4,7 @@ import axios from 'axios';
 import UserCoursesList from '../userCourses/UserCoursesList';
 import DeleteModal from '../userCourses/DeleteModal';
 import PointsHistoryLayout from './PointsHistoryLayout';
+import FollowListBar from './FollowListBar';
 
 function UserProfileLayout() {
 
@@ -13,10 +14,12 @@ function UserProfileLayout() {
     const [pressedSort, setPS] = useState('none');
     const [modal, setModal] = useState(false);
     const [refresh, setRefresh] = useState();
+    const [followers, setFollowers] = useState([]);
+    const [following_users, setFollowingUsers] = useState([]);
+    const [currentDisplay, setCurrentDisplay] = useState("courses");
 
     useEffect(() => {
         const url = 'http://127.0.0.1:8000/api/v1/courses/user_courses/' + localStorage.getItem('UserId');
-        const token = localStorage.getItem('token');
         axios.get(url, {
         auth: {
             username: localStorage.getItem('username'),
@@ -49,6 +52,20 @@ function UserProfileLayout() {
         } else setModal(false)
     }
 
+    function handleFollowersList(list) {
+        setFollowers(list);
+        setCurrentDisplay("followers")
+    }
+
+    function handleFollowingUsers(list) {
+        setFollowingUsers(list);
+        setCurrentDisplay("following_users")
+    }
+
+    function handleCoursesClick(signal) {
+        setCurrentDisplay("courses")
+    }
+
     return (
         <div className={classes.UserProfileWrapper}>
             <div className={classes.leftPanel}>
@@ -70,16 +87,27 @@ function UserProfileLayout() {
                         </div>
                     </div>
                 </div>
+                <FollowListBar userId={localStorage.getItem('UserId')} coursesAmount={courses.length}
+                    getFollowers={handleFollowersList} getFollowingUsers={handleFollowingUsers} getCourses={handleCoursesClick}/>
                 <div className={classes.userCreatedCourses}>
                     <h2>User Created Courses</h2>
                     <div className={classes.cList}>
-                    <UserCoursesList courses={courses} IsLoading={isLoading} returnId={getId} pressedSort={pressedSort} buttonContent="usun" pressedFilter='none'/>
+                        {
+                            currentDisplay === "courses" ? <UserCoursesList courses={courses} IsLoading={isLoading} returnId={getId}
+                            pressedSort={pressedSort} buttonContent="usuń" pressedFilter='none' page='OtherUserPage'/> : 
+                            currentDisplay === "followers" ? <div>{followers.map((e, index) => <div key={index} className={classes.listItem}>
+                                <a>Email: {e.email}</a><a>Username: {e.username}</a><a>Points: {e.points}</a></div>)}</div> :
+                            <div>{following_users.map((e, index) => <div key={index} className={classes.listItem}>
+                                <a>Email: {e.email}</a><a>Username: {e.username}</a><a>Points: {e.points}</a></div>)}</div>
+                        }
+                    
                     </div>
                 </div>
             </div>
             <div className={classes.rightPanel}>
                 <div className={classes.optionsContainer}>
-                    <button>User points history</button>
+                    <span className={classes.uphTitle}>User points history</span>
+                    <hr/>
                     <PointsHistoryLayout />
                 </div>
             </div>

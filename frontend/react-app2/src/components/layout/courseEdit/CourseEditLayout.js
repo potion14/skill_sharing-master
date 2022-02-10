@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import classes from "./CourseEditlayout.module.css";
 import axios from "axios";
 import EditModal from "./EditModal";
+import { useHistory } from "react-router-dom";
+import JoditEditor from "jodit-react";
 
 function CourseEditLayout(props) {
 
@@ -12,11 +14,19 @@ function CourseEditLayout(props) {
     const [titleC, setTitleC] = useState("loading...");
     const [modalOpen, setModalOpen] = useState(false);
     const [chapterId, setChapterId] = useState();
-    
-    //const [currentPressedChapterId, setcurrentPressedChapterId] = useState(0);
+    const [cocreators, setCoCreators] = useState([])
+    const [reload, setReload] = useState()
+
+    const editor = useRef(null)
+	const [editContent, setEditContent] = useState('')
+	const config = {
+		readonly: false,
+        width: '60.9rem'
+	}
 
     useEffect(() => {
         const url = 'http://127.0.0.1:8000/api/v1/courses/course/' + props.Id + '/chapters'
+        const url2 = 'http://127.0.0.1:8000/api/v1/courses/all_courses/' + props.Id
         axios.get(url, {
           auth: {
             username: localStorage.getItem('username'),
@@ -25,21 +35,26 @@ function CourseEditLayout(props) {
             }
         })
         .then(res => {
-            console.log("edit info: ", res.data)
             setContent(res.data[0].content);
             setChapters(res.data);
             setTitle(res.data[0].title);
-            setTitleC(props.Title);
             setChapterId(res.data[0].id)
-            console.log("chapters wewnatrz useEffect: ", chapters)
-            //console.log("chaptery w kliknietym kursie: ", this.state.chapters)
+            //console.log("edit info: ", res.data)
+            axios.get(url2, {
+                auth: {
+                  username: localStorage.getItem('username'),
+                  email: localStorage.getItem('email'),
+                  password: localStorage.getItem('password')
+                  }
+              })
+              .then(res1 => {
+                  setTitleC(res1.data.title);
+                  setCoCreators(res1.data.co_creators)
+                  console.log("title: ", props.Title)
+                  setLoading(false);
+              })
         })
-        setLoading(false);
-    }, [])
-
-    // console.log("CHAPTERS ", chapters)
-    // console.log("CHAPTERid ", chapters[0].id)
-    // console.log("CHAPTERidstate ", chapterId)
+    }, [loading])
 
     function handleClick(e, index) {
         e.preventDefault();
@@ -50,8 +65,8 @@ function CourseEditLayout(props) {
     }
 
     function handleChange(e) {
-        e.preventDefault();
-        setContent(e.target.value);
+        //e.preventDefault();
+        setContent(e);
         //axios.put()
     }
 
@@ -63,6 +78,8 @@ function CourseEditLayout(props) {
     function closeModal(e) {
         e.preventDefault()
         setModalOpen(false);
+        //setReload("reload")
+        //history.push("/user-courses/course-edit")
     }
 
     const url = "http://127.0.0.1:8000/api/v1/courses/course/" + props.Id + "/chapters/" + chapterId
@@ -70,7 +87,7 @@ function CourseEditLayout(props) {
     function handleConfirm(e) {
         e.preventDefault();
         axios.put(url, {
-                content: content,
+                content: editContent,
                 course: props.Id
             }, {
             auth: {
@@ -78,6 +95,12 @@ function CourseEditLayout(props) {
                 email: localStorage.getItem('email'),
                 password: localStorage.getItem('password')
             }});
+    }
+
+    function detectChanges(e) {
+        console.log("change detected edit: ", e)
+        //setReload(e)
+        setLoading(true)
     }
 
     //console.log("chapters: ", chapters)
@@ -117,7 +140,14 @@ function CourseEditLayout(props) {
                             <a>loading...</a> :
                             <div>
                                 <form>
-                                    <textarea value={content} className={classes.contentInput} onChange={(e) => handleChange(e)}></textarea>
+                                <JoditEditor
+                                    ref={editor}
+                                    value={content}
+                                    config={config}
+                                    tabIndex={1} 
+                                    onBlur={newContent => setEditContent(newContent)} 
+                                    onChange={newContent => {}}
+                                />
                                     <button onClick={(e) => {handleConfirm(e)}}>potwierdz</button>
                                 </form>
                             </div>
@@ -128,7 +158,8 @@ function CourseEditLayout(props) {
                     <div className={classes.verticalSeparatorR}></div>
                 </div>
             </div>
-            { modalOpen && <EditModal close={(e) => {closeModal(e)}} id={props.Id} chId={chapterId} title={title} titleC={titleC}/> }
+            { modalOpen && <EditModal close={(e) => {closeModal(e)}} id={props.Id} chId={chapterId} title={title}
+            titleC={titleC} detect={detectChanges} cocreators={cocreators}/> }
         </div>
     );
 }

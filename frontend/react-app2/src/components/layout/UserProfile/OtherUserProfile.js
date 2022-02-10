@@ -5,6 +5,7 @@ import UserCoursesList from '../userCourses/UserCoursesList';
 import DeleteModal from '../userCourses/DeleteModal';
 import PointsHistoryLayout from './PointsHistoryLayout';
 import { useLocation } from 'react-router-dom';
+import FollowListBar from './FollowListBar';
 
 function OtherUserProfileLayout(props) {
 
@@ -17,6 +18,12 @@ function OtherUserProfileLayout(props) {
     const [pressedSort, setPS] = useState('none');
     const [modal, setModal] = useState(false);
     const [refresh, setRefresh] = useState();
+    const [isFollowed, setIsFollowed] = useState("");
+    const follow = "Follow";
+    const unfollow = "Unfollow";
+    const [followers, setFollowers] = useState([]);
+    const [following_users, setFollowingUsers] = useState([]);
+    const [currentDisplay, setCurrentDisplay] = useState("courses");
 
     useEffect(() => {
         const url = 'http://127.0.0.1:8000/api/v1/courses/user_courses/' + location.state.creatorId;
@@ -43,12 +50,67 @@ function OtherUserProfileLayout(props) {
             setUser(res.data)
             setIsLoading(false)
         })
-    }, [])
+
+        axios.get('http://127.0.0.1:8000/api/v1/user-follower-info/follower/' + localStorage.getItem("UserId") + '/followed_user/' + location.state.creatorId + '/', {
+        auth: {
+            username: localStorage.getItem('username'),
+            email: localStorage.getItem('email'),
+            password: localStorage.getItem('password')
+            }
+        })
+        .then(res => {
+            res.data.follower_id !== "" ? setIsFollowed(res.data.follower_id) : setIsFollowed("")
+            console.log("is followed?: ", isFollowed)
+        })
+        
+    }, [isFollowed])
 
     function getId(id) {
         setCardId(id)
         setModal(true)
         //console.log("id: ", id)
+    }
+
+    function handleFollow(e) {
+        e.preventDefault()
+        //console.log("me: ", localStorage.getItem("UserId"), " person which i want to follow: ", location.state.creatorId)
+        if (isFollowed === "") {axios.post('http://127.0.0.1:8000/api/v1/new_follower/', {
+            user: location.state.creatorId,
+            follower: localStorage.getItem("UserId")
+        }, {
+            auth: {
+                username: localStorage.getItem('username'),
+                email: localStorage.getItem('email'),
+                password: localStorage.getItem('password')
+                }
+        })
+        .then(res => {
+            setUser(res.data)
+            setIsLoading(false)
+        })} else if (isFollowed !== "") {
+            axios.delete('http://127.0.0.1:8000/api/v1/delete-follower/' + isFollowed + '/', {
+                auth: {
+                    username: localStorage.getItem('username'),
+                    email: localStorage.getItem('email'),
+                    password: localStorage.getItem('password')
+                    }
+            })
+            setIsFollowed("")
+        }
+    }
+
+    function handleFollowersList(list) {
+        setFollowers(list);
+        setCurrentDisplay("followers")
+    }
+
+    function handleFollowingUsers(list) {
+        setFollowingUsers(list);
+        setCurrentDisplay("following_users")
+    }
+
+    function handleCoursesClick(signal) {
+        setCurrentDisplay("courses")
     }
 
     return (
@@ -72,16 +134,27 @@ function OtherUserProfileLayout(props) {
                         </div>
                     </div>
                 </div>
+                <FollowListBar userId={location.state.creatorId} coursesAmount={courses.length}
+                    getFollowers={handleFollowersList} getFollowingUsers={handleFollowingUsers} getCourses={handleCoursesClick}/>
                 <div className={classes.userCreatedCourses}>
                     <h2>User Created Courses</h2>
                     <div className={classes.cList}>
-                    <UserCoursesList courses={courses} IsLoading={isLoading} returnId={getId}
-                        pressedSort={pressedSort} buttonContent="zapisz" pressedFilter='none' page='OtherUserPage'/>
+                        {
+                            currentDisplay === "courses" ? <UserCoursesList courses={courses} IsLoading={isLoading} returnId={getId}
+                            pressedSort={pressedSort} buttonContent="usuń" pressedFilter='none' page='OtherUserPage'/> : 
+                            currentDisplay === "followers" ? <div>{followers.map((e, index) => <div key={index} className={classes.listItem}>
+                                <a>Email: {e.email}</a><a>Username: {e.username}</a><a>Points: {e.points}</a></div>)}</div> :
+                            <div>{following_users.map((e, index) => <div key={index} className={classes.listItem}>
+                                <a>Email: {e.email}</a><a>Username: {e.username}</a><a>Points: {e.points}</a></div>)}</div>
+                        }
+                    
                     </div>
                 </div>
             </div>
             <div className={classes.rightPanel}>
                 <div className={classes.optionsContainer}>
+                    <h2>Options:</h2>
+                    <button onClick={(e) => {handleFollow(e)}}>{isFollowed === "" ? follow : unfollow}</button>
                 </div>
             </div>
         </div>

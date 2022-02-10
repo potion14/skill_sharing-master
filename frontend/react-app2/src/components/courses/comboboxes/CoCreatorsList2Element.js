@@ -1,4 +1,5 @@
 import classes from './CoCreatorsList2Element.module.css';
+import axios from 'axios'
 
 export default function CoCreatorsList2Element(props) {
 
@@ -6,8 +7,23 @@ export default function CoCreatorsList2Element(props) {
         e.preventDefault();
         //console.log("kliknięcie: ", email)
         props.sendedFunction(user);
-        //props.removeId(id)
-        //console.log("klikniete id: ", id)
+        const url ='http://127.0.0.1:8000/api/v1/user-info-in-course/user/' + props.user.id + '/course/' + props.courseID + '/'
+        axios.get(url, {
+            auth: {
+                username: localStorage.getItem('username'),
+                email: localStorage.getItem('email'),
+                password: localStorage.getItem('password')
+            }
+        }).then(res => {
+            const url1 = 'http://127.0.0.1:8000/api/v1/delete-co-creator/' + res.data.user_co_creator_id + '/'
+            axios.delete(url1, {
+                auth: {
+                    username: localStorage.getItem('username'),
+                    email: localStorage.getItem('email'),
+                    password: localStorage.getItem('password')
+                }
+            })
+        })
     }
 
     return (
