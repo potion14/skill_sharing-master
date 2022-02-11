@@ -15,10 +15,14 @@ function MainNavigation(props) {
         <nav>
             <ul>
                 <li>
-                    <Search />
+                    {
+                    props.isAuthenticated ?
+                    <Search /> : null
+                    }
                 </li>
-                <li>
-                    <Link className={classes.link} to='/all-courses'>All Courses</Link>
+                <li>{
+                    props.isAuthenticated ?
+                    <Link className={classes.link} to='/all-courses'>All Courses</Link> : null}
                 </li>
                 <li>
                     {

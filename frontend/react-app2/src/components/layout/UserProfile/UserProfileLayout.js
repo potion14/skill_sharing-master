@@ -94,7 +94,7 @@ function UserProfileLayout() {
                     <div className={classes.cList}>
                         {
                             currentDisplay === "courses" ? <UserCoursesList courses={courses} IsLoading={isLoading} returnId={getId}
-                            pressedSort={pressedSort} buttonContent="usuń" pressedFilter='none' page='OtherUserPage'/> : 
+                            pressedSort={pressedSort} buttonContent="usuń" pressedFilter='all' page='OtherUserPage'/> : 
                             currentDisplay === "followers" ? <div>{followers.map((e, index) => <div key={index} className={classes.listItem}>
                                 <a>Email: {e.email}</a><a>Username: {e.username}</a><a>Points: {e.points}</a></div>)}</div> :
                             <div>{following_users.map((e, index) => <div key={index} className={classes.listItem}>

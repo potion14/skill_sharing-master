@@ -13,11 +13,11 @@ export default function AllCourses(props) {
     const [pressedSort, setPS] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [sortFilter, setSortFilter] = useState({
-        sort: ['none', 'alphabetic', 'likes', 'date-created'],
-        filters: ['none', 'categories']
+        sort: ['alphabetic', 'likes', 'date-created'],
+        filters: ['all', 'categories']
     })
     const [pressedSorting, setPressedSort] = useState(null);
-    const [pressedFiltering, setPressedFilter] = useState("none"); // none or category
+    const [pressedFiltering, setPressedFilter] = useState("all"); // none or category
     const [pressedFilteringId, setPressedFilterId] = useState(null); //subcategory id
 
     useEffect(() => {
@@ -30,6 +30,10 @@ export default function AllCourses(props) {
             }
         })
         .then(res => {
+            console.log("kursy w allcourses: ", res.data)
+            console.log("auth: ", localStorage.getItem('username'),
+            localStorage.getItem('email'),
+            localStorage.getItem('password'))
             setCourses(res.data)
             setIsLoading(false)
         })

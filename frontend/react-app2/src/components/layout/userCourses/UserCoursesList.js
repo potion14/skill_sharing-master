@@ -80,7 +80,7 @@ export default function UserCoursesList(props) {
             <div className={classes.loadingWrapper}><div className={classes.loading}></div></div>
             }
         </div> */}
-        {pressedFilter === 'none' ?
+        {pressedFilter === 'all' ?
         <div className={classes.userCoursesListContainer}>
             {
             isLoading === false ?

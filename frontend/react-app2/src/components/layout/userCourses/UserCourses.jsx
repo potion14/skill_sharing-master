@@ -17,7 +17,7 @@ class UserCourses extends Component {
       sort: ['none', 'categories', 'alphabetic', 'likes', 'date-created'],
       filters: ['none', 'categories'],
       pressedSort: null,
-      pressedFilter: 'none',
+      pressedFilter: 'all',
       modal: false
     }
     this.onCloseModal = this.onCloseModal.bind(this)

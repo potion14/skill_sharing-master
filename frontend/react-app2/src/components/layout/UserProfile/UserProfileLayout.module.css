@@ -5,7 +5,6 @@
 
 .leftPanel {
     flex: 1;
-    background-color: rgb(240, 198, 198);
 }
 
 .centerPanel {
@@ -16,7 +15,6 @@
 
 .rightPanel {
     flex: 1.86;
-    background-color: rgb(240, 198, 198);
 }
 
 .userPanelHead {
@@ -149,6 +147,7 @@
     background-color: rgb(224, 184, 184);
     padding: 1rem;
     overflow-y: scroll;
+    max-height: 48rem;
 }
 
 .historyCard {

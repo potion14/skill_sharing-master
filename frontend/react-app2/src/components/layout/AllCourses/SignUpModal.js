@@ -68,8 +68,10 @@ export default function SignUpModal(props) {
                 {
                     loading === true ? <div>loading ...</div> : <div>
                         {
-                            price > points ? <div>not enough points</div> : <div>
-                                Price: {price}, Points: {points}, Are you sure you want to participate in this course?
+                            price > points ? <a>not enough points</a> : <div className={classes.modal}>
+                                <h3>Are you sure you want to participate in this course?</h3>
+                                <a>Price: {price}</a>
+                                <span>Points: {points}</span>
                                 <button onClick={(e) => {handleConfirmation(e)}}>yes</button>
                                 </div>
                         }

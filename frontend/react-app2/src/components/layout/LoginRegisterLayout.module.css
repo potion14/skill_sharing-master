@@ -8,7 +8,7 @@
     display: flex;
     opacity: 100%;
     background: linear-gradient(to bottom, transparent, mistyrose 75%),
-                linear-gradient(to right, transparent, mistyrose 99%), url("kurisu.gif");
+                linear-gradient(to right, transparent, mistyrose 99%), url("../../assets/books.jpg");
     background-size: cover;
     background-position: center 10%, left;
 }
@@ -18,7 +18,7 @@
     display: flex;
     background-color: pink;
     background: linear-gradient(to bottom, transparent, mistyrose 75%),
-                linear-gradient(to left, transparent, mistyrose 99%), url("levi.gif");
+                linear-gradient(to left, transparent, mistyrose 99%), url("../../assets/books.jpg");
     background-size: cover;
 }
 
@@ -81,6 +81,7 @@
     margin: 10px;
     border-radius: 5px;
     font-weight: 500;
+    font-size: 1.2rem;
     width: 100px;
     height: 30px;
     border: none;

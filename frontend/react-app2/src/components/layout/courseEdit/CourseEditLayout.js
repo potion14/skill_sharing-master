@@ -129,7 +129,7 @@ function CourseEditLayout(props) {
                     <div className={classes.titlePanel}>
                         <div>
                             <label className={classes.chapterTitle}>{titleC}</label>
-                            <label className={classes.chapterTitle}>- {title}</label>
+                            <label className={classes.chapterTitle2}>{title}</label>
                         </div>
                         <button className={classes.modalButton} onClick={(e) => {editModalClick(e)}}>Edit other elements</button>
                     </div>
@@ -148,7 +148,7 @@ function CourseEditLayout(props) {
                                     onBlur={newContent => setEditContent(newContent)} 
                                     onChange={newContent => {}}
                                 />
-                                    <button onClick={(e) => {handleConfirm(e)}}>potwierdz</button>
+                                    <button className={classes.confirmButton} onClick={(e) => {handleConfirm(e)}}>confirm</button>
                                 </form>
                             </div>
                         }

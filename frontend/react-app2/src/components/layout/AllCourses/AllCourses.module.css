@@ -132,6 +132,50 @@
     background-color: rgb(196, 169, 169);
 }
 
+.modal {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.modal > a {
+    font-size: 1.2rem;
+}
+
+.modal > span {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.modal > button {
+    position: absolute;
+    left: 5.5rem;
+    top: 7.9rem;
+    font: inherit;
+    cursor: pointer;
+    background-color: #77002e;
+    color: white;
+    padding: 0.2rem 1rem;
+    border: 1px solid #77002e;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-right: 2px;
+    height: 2rem;
+}
+
+.modalContainer > button {
+    font: inherit;
+    cursor: pointer;
+    background-color: #77002e;
+    color: white;
+    padding: 0.2rem 1rem;
+    border: 1px solid #77002e;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-right: 2px;
+    height: 2rem;
+}
+
 .subcategory:hover {
     font-weight: bold;
 }
