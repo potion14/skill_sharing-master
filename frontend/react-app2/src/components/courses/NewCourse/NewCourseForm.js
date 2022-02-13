@@ -6,6 +6,7 @@ import JoditEditor from "jodit-react";
 
 import classes from './NewCourseForm.module.css';
 import Alert from "./Alert";
+import CourseVisibilityCombo from "./CourseVisibilityCombo";
 
 function NewCourseForm() {
     const courseTitleInputRef = useRef();
@@ -20,6 +21,7 @@ function NewCourseForm() {
     const [category, setCategory] = useState(0);
     const [subcategory, setSubcategory] = useState(0);
     const [walidator, setWalidator] = useState(false);
+    const [visibilityOption, setVisibilityOption] = useState({id: 1, name: 'Everyone'})
 
     const editor = useRef(null)
 	const [content, setContent] = useState('')
@@ -31,8 +33,8 @@ function NewCourseForm() {
     async function submitHandler(event) {
         event.preventDefault();
         if (titleSet === false) {
-            console.log("cocreators: ", cocreators, "category: ", category, "subcategory: ", subcategory)
-            if (cocreators === [] || category === 0 || subcategory === 0) {
+            console.log("category: ", category, "subcategory: ", subcategory, "visibility: ", visibilityOption)
+            if (category === 0 || subcategory === 0 || visibilityOption ===0) {
                 setWalidator(true)
             } else {
             setWalidator(false)
@@ -52,6 +54,8 @@ function NewCourseForm() {
                     date_joined: localStorage.getItem("JoinDate"),
                     points: localStorage.getItem("userPoints")
                 },
+                visibility: visibilityOption.id,
+                visibility_name: visibilityOption.name,
                 main_category: category
             }, {
             auth: {
@@ -138,6 +142,10 @@ function NewCourseForm() {
         setSubcategory(subcat)
     }
 
+    function setVisibility(option) {
+        setVisibilityOption(option)
+    }
+
     return <div className={classes.wrapper}>
         <div className={classes.leftPanel}>
             <div className={classes.chaptersContainer}>
@@ -160,6 +168,7 @@ function NewCourseForm() {
                         <label>Course Title</label>
                         <input type='text' required id='courseTitle' ref={courseTitleInputRef} />
                     </div>
+                    <CourseVisibilityCombo setOption={setVisibility} />
                     <CategoriesCombo getCategoriesData={setCategories} type='categories' category_selected='0'/>
                     {category !== 0 ? <CategoriesCombo getCategoriesData={setSubCategories} type='subcategories' category_selected={category}/> : null}
                     <div className={classes.actions}>

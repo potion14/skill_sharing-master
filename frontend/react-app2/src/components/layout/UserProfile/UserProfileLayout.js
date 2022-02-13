@@ -17,6 +17,7 @@ function UserProfileLayout() {
     const [followers, setFollowers] = useState([]);
     const [following_users, setFollowingUsers] = useState([]);
     const [currentDisplay, setCurrentDisplay] = useState("courses");
+    const [points, setPoints] = useState(0)
 
     useEffect(() => {
         const url = 'http://127.0.0.1:8000/api/v1/courses/user_courses/' + localStorage.getItem('UserId');
@@ -31,6 +32,16 @@ function UserProfileLayout() {
             setCourses(res.data)
             setIsLoading(false)
         })
+        axios.get('http://127.0.0.1:8000/api/v1/my_points/', {
+            auth: {
+                username: localStorage.getItem('username'),
+                email: localStorage.getItem('email'),
+                password: localStorage.getItem('password')
+                }
+            })
+            .then(res => {
+                setPoints(res.data.user_points)
+            })
     }, [])
 
     function getId(id) {
@@ -83,14 +94,19 @@ function UserProfileLayout() {
                     <div className={classes.pointsInfoC}>
                         <h2>Points:</h2>
                         <div className={classes.pointsInfo}>
-                            <h2>{localStorage.getItem("userPoints")}</h2>
+                            <h2>{points}</h2>
                         </div>
                     </div>
                 </div>
                 <FollowListBar userId={localStorage.getItem('UserId')} coursesAmount={courses.length}
                     getFollowers={handleFollowersList} getFollowingUsers={handleFollowingUsers} getCourses={handleCoursesClick}/>
                 <div className={classes.userCreatedCourses}>
-                    <h2>User Created Courses</h2>
+                    {
+                        currentDisplay === "courses" ? <h2>User Created Courses</h2> :
+                        currentDisplay === "followers" ? <h2>Followers</h2> :
+                        <h2>Following</h2>
+
+                    }
                     <div className={classes.cList}>
                         {
                             currentDisplay === "courses" ? <UserCoursesList courses={courses} IsLoading={isLoading} returnId={getId}

@@ -121,7 +121,7 @@ function OtherUserProfileLayout(props) {
                 <div className={classes.userPanelHead}>
                     <div className={classes.profilePicture}></div>
                     <div className={classes.infoContainer}>
-                        <h2>{user.email}</h2>
+                        <h2>{user.username}</h2>
                         <div className={classes.otherInfo}>
                             <h2>Email: {user.email}</h2>
                             <h2>Joined: {user.date_joined}</h2>
@@ -137,7 +137,11 @@ function OtherUserProfileLayout(props) {
                 <FollowListBar userId={location.state.creatorId} coursesAmount={courses.length}
                     getFollowers={handleFollowersList} getFollowingUsers={handleFollowingUsers} getCourses={handleCoursesClick}/>
                 <div className={classes.userCreatedCourses}>
-                    <h2>User Created Courses</h2>
+                    {
+                        currentDisplay === "courses" ? <h2>User Created Courses</h2> :
+                        currentDisplay === "followers" ? <h2>Followers</h2> :
+                        <h2>Following</h2>
+                    }
                     <div className={classes.cList}>
                         {
                             currentDisplay === "courses" ? <UserCoursesList courses={courses} IsLoading={isLoading} returnId={getId}

@@ -16,6 +16,8 @@ function CourseEditLayout(props) {
     const [chapterId, setChapterId] = useState();
     const [cocreators, setCoCreators] = useState([])
     const [reload, setReload] = useState()
+    const [category, setCategory] = useState(0)
+    const [subcategory, setSubCategory] = useState(0)
 
     const editor = useRef(null)
 	const [editContent, setEditContent] = useState('')
@@ -50,6 +52,8 @@ function CourseEditLayout(props) {
               .then(res1 => {
                   setTitleC(res1.data.title);
                   setCoCreators(res1.data.co_creators)
+                  setSubCategory(res1.data.category)
+                  setCategory(res1.data.main_category)
                   console.log("title: ", props.Title)
                   setLoading(false);
               })
@@ -144,8 +148,8 @@ function CourseEditLayout(props) {
                                     ref={editor}
                                     value={content}
                                     config={config}
-                                    tabIndex={1} 
-                                    onBlur={newContent => setEditContent(newContent)} 
+                                    tabIndex={1}
+                                    onBlur={newContent => setEditContent(newContent)}
                                     onChange={newContent => {}}
                                 />
                                     <button className={classes.confirmButton} onClick={(e) => {handleConfirm(e)}}>confirm</button>
@@ -159,7 +163,7 @@ function CourseEditLayout(props) {
                 </div>
             </div>
             { modalOpen && <EditModal close={(e) => {closeModal(e)}} id={props.Id} chId={chapterId} title={title}
-            titleC={titleC} detect={detectChanges} cocreators={cocreators}/> }
+            titleC={titleC} detect={detectChanges} cocreators={cocreators} category={category} subcategory={subcategory}/> }
         </div>
     );
 }

@@ -29,7 +29,7 @@ export default function CategoriesList(props) {
     }
 
     return (
-        <div>{categories.map((i, index) => <div key={index} className={classes.category}>
+        <div className={classes.categoriesFilters}>{categories.map((i, index) => <div key={index} className={classes.category}>
             {i.name}
             <SubcategoriesList main_category_id={i.id} recieveSubId={getPressedSubId}/>
             </div>)}

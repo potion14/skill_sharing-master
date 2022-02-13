@@ -104,3 +104,17 @@
     content: url('../../../assets/giphy.gif');
     height: 15rem;
 }
+
+.visibilityDropdown {
+    background-color: rgb(236, 226, 226);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) inset;
+    margin-top: 10px;
+    width: 30rem;
+    padding: .5rem;
+}
+
+.visibilityLisetElement:hover {
+    cursor: pointer;
+    color: rgb(156, 143, 143);
+    pointer-events: auto;
+}

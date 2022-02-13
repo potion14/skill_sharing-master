@@ -65,7 +65,7 @@ export default function CategoriesCombo(props) {
         }
     }
 
-    props.getCategoriesData(selectedCategoryId, selectedSubCategoryId);
+    props.getCategoriesData(selectedCategoryId, selectedSubCategoryId, selectedCategories.name, selectedSubCategories.name);
 
     if (loading === true) return (<div className={classes.loadingContainer}>
             <div className={classes.loadingImage}/>
