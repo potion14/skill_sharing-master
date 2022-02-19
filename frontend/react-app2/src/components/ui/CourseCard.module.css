@@ -16,14 +16,14 @@
 }
 
 .singleCourseContainer:hover > img{
-    content: url("./kurisu.gif");
+    content: url("./placeholder_photo.jpg");
 }
 
 .courseImg{
     width: 100%;
     height: 220px;
     object-fit: cover;
-    content: url("./static.PNG");
+    content: url("./placeholder_photo.jpg");
 }
 
 .singleCourseTitle{

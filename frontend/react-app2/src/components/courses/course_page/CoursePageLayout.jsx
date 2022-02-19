@@ -23,19 +23,13 @@ class CoursePageLayout extends Component {
             creator: "loading",
             creatorId: null
         }
-        //console.log("CoursePageLayout pressedCourseID: ", this.state.pressedCourseId)
         this.handleClick = this.handleClick.bind(this);
-        //this.handleRating = this.handleRating.bind(this);
     }
 
     handleClick(e, id) {
         e.preventDefault()
         this.setState({pressedId: id, currentContent: this.state.chapters[id].content, title: this.state.chapters[id].title, chapterId: this.state.chapters[id].id})
         console.log("chapter: ", this.state.chapterId)
-        //this.setState({pressedId: id})
-        //console.log("id: ", id)
-        //console.log("content: ", this.state.chapters[2].content)
-        //console.log("pressedId: ", this.state.pressedId)
     }
 
     componentDidMount() {
@@ -51,12 +45,9 @@ class CoursePageLayout extends Component {
         this.setState({
             chapters: res.data,
             currentContent: res.data[0].content,
-            //pressedId: 1,
             title: res.data[0].title,
             chapterId: res.data[0].id
         });
-        //console.log("chaptery w kliknietym kursie: ", this.state.chapters)
-        //console.log("chapter: ", this.state.chapterId)
         })
         axios.get('http://127.0.0.1:8000/api/v1/courses/all_courses/' + this.state.pressedCourseId, {
             auth: {
@@ -71,26 +62,7 @@ class CoursePageLayout extends Component {
               creator: res.data.creator,
               creatorId: res.data.creator.id
           });
-          //console.log("creator: ", this.state.creator)
           })
-    }
-
-    componentWillUnmount() {
-        //console.log("parrent rating in cdm: ", this.state.rating);
-        //const url1 = 'http://127.0.0.1:8000/api/v1/courses/course/' + this.state.pressedCourseId + '/ratings/'
-        // if (this.state.rating > 0) axios.post(url1, {
-        //     course: this.state.pressedCourseId,
-        //     rating: this.state.rating,
-        //     content: this.state.ratingTekst
-        // }, {
-        //     auth: {
-        //         username: localStorage.getItem('username'),
-        //         email: localStorage.getItem('email'),
-        //         password: localStorage.getItem('password')
-        //     }
-        // }).catch(err => {
-        //     //setAlert(true)
-        // })
     }
 
     render() {

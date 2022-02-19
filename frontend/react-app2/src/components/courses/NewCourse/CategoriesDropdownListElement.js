@@ -9,6 +9,6 @@ export default function CategoriesDropdownListElement(props) {
     }
 
     return (
-        <a onClick={(e) => handleClick(props.category, e, props.type)}>{props.category.name}</a>
+        <a onClick={(e) => handleClick(props.category, e, props.type)} className={classes.le}>{props.category.name}</a> 
     )
 }

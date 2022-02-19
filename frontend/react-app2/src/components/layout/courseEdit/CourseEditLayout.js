@@ -4,6 +4,8 @@ import axios from "axios";
 import EditModal from "./EditModal";
 import { useHistory } from "react-router-dom";
 import JoditEditor from "jodit-react";
+import AddIcon from '@material-ui/icons/Add';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 function CourseEditLayout(props) {
 
@@ -127,13 +129,15 @@ function CourseEditLayout(props) {
                                 <li key={index} onClick={(e) => {handleClick(e, index)}}>{t.title}</li>)}
                             </ul>
                         }
+                        <hr className={classes.chaptersHr}></hr>
+                        <AddIcon />
                     </div>
                 </div>
                 <div className={classes.middlePanel}>
                     <div className={classes.titlePanel}>
                         <div>
                             <label className={classes.chapterTitle}>{titleC}</label>
-                            <label className={classes.chapterTitle2}>{title}</label>
+                            <label className={classes.chapterTitle2}>{title} <DeleteForeverIcon /></label>
                         </div>
                         <button className={classes.modalButton} onClick={(e) => {editModalClick(e)}}>Edit other elements</button>
                     </div>

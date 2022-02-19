@@ -3,6 +3,7 @@ import axios from "axios";
 //import { useEffect, useState } from "react";
 import { Component } from 'react';
 import CoursePageLayout from "../../courses/course_page/CoursePageLayout";
+import CategoriesList from "../AllCourses/CategoriesList";
 import UserCoursesList from "./UserCoursesList";
 import DeleteModal from "./DeleteModal"
 
@@ -14,11 +15,12 @@ class UserCourses extends Component {
       courses: [],
       cardId: null,
       isLoading: true,
-      sort: ['none', 'categories', 'alphabetic', 'likes', 'date-created'],
-      filters: ['none', 'categories'],
+      sort: ['alphabetic', 'likes', 'date-created'],
+      filters: ['all', 'categories'],
       pressedSort: null,
       pressedFilter: 'all',
-      modal: false
+      modal: false,
+      pressedFilterId: null
     }
     this.onCloseModal = this.onCloseModal.bind(this)
   }
@@ -65,13 +67,21 @@ class UserCourses extends Component {
     this.setState({modal: false});
   }
 
+  onSortClick() {
+
+  }
+
+  onFilterClick() {
+
+  }
+
   render() {
     const ID = localStorage.getItem("pressedCourseID");
     //console.log("render ID: ", ID)
       return (
           <div className={classes.userCoursesContainer}>
               <div className={classes.leftSide}>
-                  <div className={classes.filtersContainer}>
+                  {/* <div className={classes.filtersContainer}>
                       <span className={classes.filtersTitle}>Sort by</span>
                       <ul className={classes.filtersList}>
                         {
@@ -86,7 +96,24 @@ class UserCourses extends Component {
                           this.state.filters.map((i, index) => <li key={index} tabIndex={index} onClick={(e) => {this.onFilterClick(e, i)}}>{i}</li>)
                         }
                       </ul>
-                  </div>
+                  </div> */}
+                  <div className={classes.filtersContainer}>
+                    <span className={classes.filtersTitle}>Sort by</span>
+                    <ul className={classes.filtersList}>
+                        {
+                          this.state.sort.map((i, index) => <li key={index} tabIndex={index} onClick={(e) => {this.onSortClick(e, i)}}>{i}</li>)
+                        }
+                    </ul>
+                </div>
+                <div className={classes.differentContainer}>
+                    <span className={classes.filtersTitle}>Filter by</span>
+                    <ul className={classes.filtersList}>
+                        {
+                          this.state.filters.map((i, index) => <li key={index} tabIndex={index} onClick={(e) => {this.onFilterClick(e, i)}}>{i}</li>)
+                        }
+                        <CategoriesList pressedFilter={this.state.pressedFilterId} />
+                    </ul>
+                </div>
               </div>
               <div className={classes.middleContent}>
                   <span className={classes.userCoursesText}>User Courses</span>

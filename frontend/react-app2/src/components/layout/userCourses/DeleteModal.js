@@ -62,14 +62,18 @@ export default function SignUpModal(props) {
             props.type === 'userProfile' ?
             <div className={classes.modalContainer}>
                 <span>Are you sure?</span>
-                <button onClick={(e) => {handleConfirmation(e)}}>yes</button>
-                <button onClick={(e) => {handleClick(e)}}>back</button>
+                <div>
+                    <button onClick={(e) => {handleConfirmation(e)}}>yes</button>
+                    <button onClick={(e) => {handleClick(e)}}>back</button>
+                </div>
             </div> : 
             <div className={classes.modalContainer}>
                 <span>Leave your feedback before you sign out!</span>
                 <Raiting getRating={handleRating}/>
-                <button onClick={(e) => {handleSignOut(e)}}>yes</button>
-                <button onClick={(e) => {handleClick(e)}}>back</button>
+                <div>
+                    <button onClick={(e) => {handleSignOut(e)}}>yes</button>
+                    <button onClick={(e) => {handleClick(e)}}>back</button>
+                </div>
             </div>
         }
         </div>

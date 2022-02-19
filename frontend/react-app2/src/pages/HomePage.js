@@ -1,6 +1,10 @@
+import { useState } from "react";
+import { useEffect } from "react";
 import MeetupList from "../components/courses/MeetupList";
 import Ad from "../components/layout/Ad";
 import classes from "./HomePage.module.css"
+import axios from "axios";
+import UserCoursesList from "../components/layout/userCourses/UserCoursesList";
 
 const DUMMY_DATA = [
     {
@@ -43,15 +47,60 @@ const DUMMY_DATA = [
 
 
 function AllMeetupsPage() {
+
+  const [topCourses, setTopCourses] = useState([])
+  const [recent, setRecent] = useState([])
+  const [loading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    axios.get('http://127.0.0.1:8000/api/v1/courses/top-courses-ranking', {
+      auth: {
+          username: localStorage.getItem('username'),
+          email: localStorage.getItem('email'),
+          password: localStorage.getItem('password')
+          }
+      })
+      .then(res => {
+        setTopCourses(res.data.slice(0, 4))
+        setIsLoading(false)
+      })
+      // axios.get('http://127.0.0.1:8000/api/v1/courses/top-courses-ranking', {
+      // auth: {
+      //     username: localStorage.getItem('username'),
+      //     email: localStorage.getItem('email'),
+      //     password: localStorage.getItem('password')
+      //     }
+      // })
+      // .then(res => {
+      //   setRecent(res.data.slice(0, 4))
+      //   setIsLoading(false)
+      // })
+  }, [])
+
+  function getId(id) {
+    
+    //<div className={classes.coursesListContainer}><MeetupList courses={DUMMY_DATA} page="HomePage"/></div>
+
+  }
+
     return <div>
       <div><Ad /></div>
-      <h1>Recently top rated courses</h1>
+      <h1>Recently top rated courses</h1> 
       <div className={classes.coursesListContainer}>
-        <MeetupList courses={DUMMY_DATA} page="HomePage"/>
+        {
+          <UserCoursesList courses={topCourses} IsLoading={loading} returnId={getId} pressedFilter='all' pressedFilterId={null}
+          pressedSort={null} buttonContent="zapisz" page="AllCourses"/>
+        }
       </div>
       <hr className={classes.listHr}></hr>
       <h1>Recently added courses</h1>
-      <div className={classes.coursesListContainer}><MeetupList courses={DUMMY_DATA} page="HomePage"/></div>
+      <div className={classes.coursesListContainer}>
+        {
+          <UserCoursesList courses={topCourses} IsLoading={loading} returnId={getId} pressedFilter='all' pressedFilterId={null}
+          pressedSort={null} buttonContent="zapisz" page="AllCourses"/>
+        }
+      </div>
+      <div className={classes.bottomEnder}></div>
     </div>
 }
 

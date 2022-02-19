@@ -6,3 +6,10 @@
 .listHr{
   margin: 20px 200px 20px 200px;
 }
+
+.bottomEnder {
+  height: 10rem;
+  border-top: 1px solid black;
+  margin-top: 1rem;
+  background-color: rgb(197, 154, 154);
+}

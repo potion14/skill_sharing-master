@@ -15,6 +15,7 @@ function CourseCard (props) {
     })
     const [modal, setModal] = useState(false);
     const [ratings, setRatings] = useState([])
+    const [creatorId, setCreatorId] = useState();
 
     function handleClick(e, id) {
         e.preventDefault();
@@ -42,6 +43,16 @@ function CourseCard (props) {
             .then(res => {
               setRatings(res.data)
             })
+            // axios.get('http://127.0.0.1:8000/api/v1/courses/course/' + props.id, {
+            //     auth: {
+            //         username: localStorage.getItem('username'),
+            //         email: localStorage.getItem('email'),
+            //         password: localStorage.getItem('password')
+            //       }
+            //     })
+            //     .then(res => {
+            //       setCreatorId(res.data.creator.id)
+            //     })
     }, [])
 
     return (
