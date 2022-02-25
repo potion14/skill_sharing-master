@@ -21,14 +21,11 @@ export default function EditModal(props) {
         props.close(e)
     }
 
-    console.log("coCreators: ", propsCoCre)
-
     function recieveSelected(array) {
         setCoCreators(array);
     }
 
     function detectChange(e) {
-        console.log("change detected editmodal: ", e)
         props.detect(e)
     }
 
@@ -66,7 +63,6 @@ export default function EditModal(props) {
             }
         })
         .then(res => {
-            //setCategories(res.data)
             axios.get(url2, {
                 auth: {
                 username: localStorage.getItem('username'),
@@ -75,7 +71,6 @@ export default function EditModal(props) {
                 }
             })
             .then(res1 => {
-                //setSubCategories(res1.data)
                 var index = res.data.findIndex(object => object.id === props.category)
                 setCategoryName(res.data[index].name)
                 var index1 = res1.data.findIndex(object => object.id === props.subcategory)
@@ -88,13 +83,13 @@ export default function EditModal(props) {
         <div className={classes.backdrop} >
             <div className={classes.modalContainer}>
                 <div>
-                    <EditMiniForm labelContent="Change course title:" id={props.id} inputContent={props.titleC}
-                    inputType="courseTitle" change={detectChange}/>
+                    {props.cocreator === false ? <EditMiniForm labelContent="Change course title:" id={props.id} inputContent={props.titleC}
+                    inputType="courseTitle" change={detectChange}/> : null}
                     <EditMiniForm labelContent="Change current chapter title:" id={props.id} inputContent={props.title}
                     inputType="chapterTitle" chId={props.chId} change={detectChange}/>
                 </div>
                 <div className={classes.comboWrapper}>
-                <CourseVisibilityCombo setOption={setVisibility}/>
+                {props.cocreator === false ? <CourseVisibilityCombo setOption={setVisibility}/> : null}
                 <CoCreatorsCombo getData={recieveSelected} existingCoCreators={propsCoCre} courseID={props.id}/>
                 <CategoriesCombo getCategoriesData={setCategories} type='categories' category_selected='0'/>
                 {category !== 0 ? <CategoriesCombo getCategoriesData={setSubCategories} type='subcategories' category_selected={category}/> : null}

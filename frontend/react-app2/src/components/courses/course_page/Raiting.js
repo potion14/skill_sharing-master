@@ -11,15 +11,12 @@ export default function Raiting(props) {
 
     function handleClick(e, index) {
         e.preventDefault();
-        console.log("current raiting: ", index)
-        //console.log("current raiting tekst: ", currentRaitingText)
         setCurrentRaiting(index);
         props.getRating(index, currentRaitingText)
     }
 
     function textareaChanged(e) {
         setcurrentRaitingText(e.target.value)
-        console.log("current raiting tekst: ", currentRaitingText)
         props.getRating(currentRating, e.target.value)
     }
 

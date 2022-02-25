@@ -12,7 +12,7 @@ function OtherUserProfileLayout(props) {
     const location = useLocation();
 
     const [courses, setCourses] = useState([]);
-    const [user, setUser] = useState('loading')
+    const [user, setUser] = useState('loading');
     const [isLoading, setIsLoading] = useState(true);
     const [cardId, setCardId] = useState(null);
     const [pressedSort, setPS] = useState('none');
@@ -36,7 +36,6 @@ function OtherUserProfileLayout(props) {
         })
         .then(res => {
             setCourses(res.data)
-            //setIsLoading(false)
         })
         const token = localStorage.getItem('token');
         axios.get('http://127.0.0.1:8000/api/v1/users/' + location.state.creatorId, {
@@ -60,7 +59,6 @@ function OtherUserProfileLayout(props) {
         })
         .then(res => {
             res.data.follower_id !== "" ? setIsFollowed(res.data.follower_id) : setIsFollowed("")
-            console.log("is followed?: ", isFollowed)
         })
         
     }, [isFollowed])
@@ -68,12 +66,10 @@ function OtherUserProfileLayout(props) {
     function getId(id) {
         setCardId(id)
         setModal(true)
-        //console.log("id: ", id)
     }
 
     function handleFollow(e) {
         e.preventDefault()
-        //console.log("me: ", localStorage.getItem("UserId"), " person which i want to follow: ", location.state.creatorId)
         if (isFollowed === "") {axios.post('http://127.0.0.1:8000/api/v1/new_follower/', {
             user: location.state.creatorId,
             follower: localStorage.getItem("UserId")
@@ -145,7 +141,7 @@ function OtherUserProfileLayout(props) {
                     <div className={classes.cList}>
                         {
                             currentDisplay === "courses" ? <UserCoursesList courses={courses} IsLoading={isLoading} returnId={getId}
-                            pressedSort={pressedSort} buttonContent="usuń" pressedFilter='none' page='OtherUserPage'/> : 
+                            pressedSort={pressedSort} buttonContent="sign in" pressedFilter='all' page='OtherUserProfile'/> : 
                             currentDisplay === "followers" ? <div>{followers.map((e, index) => <div key={index} className={classes.listItem}>
                                 <a>Email: {e.email}</a><a>Username: {e.username}</a><a>Points: {e.points}</a></div>)}</div> :
                             <div>{following_users.map((e, index) => <div key={index} className={classes.listItem}>

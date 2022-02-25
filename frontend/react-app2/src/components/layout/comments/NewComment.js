@@ -7,12 +7,9 @@ export default function NewComment(props) {
     const [commentContent, setCC] = useState("");
     const [signal, setSignal] = useState(false)
 
-    //console.log("chapterId: ", props.chapterId);
-
     function handleChange(e) {
         e.preventDefault();
         setCC(e.target.value);
-        console.log(commentContent)
     }
 
     async function handleClick(e) {

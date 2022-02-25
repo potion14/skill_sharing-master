@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import JoditEditor from "jodit-react";
 import AddIcon from '@material-ui/icons/Add';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import NewChapterModal from "./NewChapterModal";
 
 function CourseEditLayout(props) {
 
@@ -15,9 +16,9 @@ function CourseEditLayout(props) {
     const [title, setTitle] = useState("loading...");
     const [titleC, setTitleC] = useState("loading...");
     const [modalOpen, setModalOpen] = useState(false);
+    const [newChapterModalOpen, setChapterModalOpen] = useState(false)
     const [chapterId, setChapterId] = useState();
     const [cocreators, setCoCreators] = useState([])
-    const [reload, setReload] = useState()
     const [category, setCategory] = useState(0)
     const [subcategory, setSubCategory] = useState(0)
 
@@ -43,7 +44,6 @@ function CourseEditLayout(props) {
             setChapters(res.data);
             setTitle(res.data[0].title);
             setChapterId(res.data[0].id)
-            //console.log("edit info: ", res.data)
             axios.get(url2, {
                 auth: {
                   username: localStorage.getItem('username'),
@@ -56,7 +56,6 @@ function CourseEditLayout(props) {
                   setCoCreators(res1.data.co_creators)
                   setSubCategory(res1.data.category)
                   setCategory(res1.data.main_category)
-                  console.log("title: ", props.Title)
                   setLoading(false);
               })
         })
@@ -64,16 +63,13 @@ function CourseEditLayout(props) {
 
     function handleClick(e, index) {
         e.preventDefault();
-        //setcurrentPressedChapterId(index);
         setContent(chapters[index].content);
         setTitle(chapters[index].title)
         setChapterId(chapters[index].id)
     }
 
     function handleChange(e) {
-        //e.preventDefault();
         setContent(e);
-        //axios.put()
     }
 
     function editModalClick(e) {
@@ -84,8 +80,6 @@ function CourseEditLayout(props) {
     function closeModal(e) {
         e.preventDefault()
         setModalOpen(false);
-        //setReload("reload")
-        //history.push("/user-courses/course-edit")
     }
 
     const url = "http://127.0.0.1:8000/api/v1/courses/course/" + props.Id + "/chapters/" + chapterId
@@ -104,12 +98,32 @@ function CourseEditLayout(props) {
     }
 
     function detectChanges(e) {
-        console.log("change detected edit: ", e)
-        //setReload(e)
         setLoading(true)
     }
 
-    //console.log("chapters: ", chapters)
+    function addChapter(e) {
+        setChapterModalOpen(true)
+    }
+
+    function closeChapterModal() {
+        setChapterModalOpen(false)
+    }
+
+    function confirmNewChapter(con, tit) {
+        setChapterModalOpen(false)
+        setLoading(true)
+    }
+
+    function deleteChapter(e) {
+        e.preventDefault();
+        axios.delete(url, {
+        auth: {
+            username: localStorage.getItem('username'),
+            email: localStorage.getItem('email'),
+            password: localStorage.getItem('password')
+        }});
+        setLoading(true);
+    }
 
     return (
         <div>
@@ -130,14 +144,14 @@ function CourseEditLayout(props) {
                             </ul>
                         }
                         <hr className={classes.chaptersHr}></hr>
-                        <AddIcon />
+                        <AddIcon onClick={(e) => {addChapter(e)}}/>
                     </div>
                 </div>
                 <div className={classes.middlePanel}>
                     <div className={classes.titlePanel}>
                         <div>
                             <label className={classes.chapterTitle}>{titleC}</label>
-                            <label className={classes.chapterTitle2}>{title} <DeleteForeverIcon /></label>
+                            <label className={classes.chapterTitle2}>{title} <DeleteForeverIcon onClick={(e) => {deleteChapter(e)}}/></label>
                         </div>
                         <button className={classes.modalButton} onClick={(e) => {editModalClick(e)}}>Edit other elements</button>
                     </div>
@@ -166,14 +180,11 @@ function CourseEditLayout(props) {
                     <div className={classes.verticalSeparatorR}></div>
                 </div>
             </div>
-            { modalOpen && <EditModal close={(e) => {closeModal(e)}} id={props.Id} chId={chapterId} title={title}
+            { modalOpen && <EditModal close={(e) => {closeModal(e)}} id={props.Id} chId={chapterId} title={title} cocreator={props.cocreator}
             titleC={titleC} detect={detectChanges} cocreators={cocreators} category={category} subcategory={subcategory}/> }
+            { newChapterModalOpen && <NewChapterModal close={closeChapterModal} add={confirmNewChapter} courseId={props.Id}/>}
         </div>
     );
 }
-
-
-// {this.state.chapters.map((t, index) => 
-//     <li key={index} onClick={(e) => {this.handleClick(e, index)}}>{t.title}</li>)}
 
 export default CourseEditLayout;

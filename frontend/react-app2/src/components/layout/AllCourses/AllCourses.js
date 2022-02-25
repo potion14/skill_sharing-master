@@ -30,10 +30,6 @@ export default function AllCourses(props) {
             }
         })
         .then(res => {
-            console.log("kursy w allcourses: ", res.data)
-            console.log("auth: ", localStorage.getItem('username'),
-            localStorage.getItem('email'),
-            localStorage.getItem('password'))
             setCourses(res.data)
             setIsLoading(false)
         })
@@ -78,7 +74,7 @@ export default function AllCourses(props) {
             <div className={classes.middleContent}>
                 <span className={classes.userCoursesText}>All Courses</span>
                 <UserCoursesList courses={courses} IsLoading={isLoading} returnId={getId} pressedFilter={pressedFiltering} pressedFilterId={pressedFilteringId}
-                pressedSort={pressedSorting} buttonContent="zapisz" page="AllCourses"/>
+                pressedSort={pressedSorting} buttonContent="sign in" page="AllCourses"/>
             </div>
             <div className={classes.rightSide}></div>
             { modalOpen && <SignUpModal closeModal={setModalOpen} courseId={cardId}/> }

@@ -5,7 +5,6 @@ export default function CoCreatorsList2Element(props) {
 
     function handleClick(user, e) {
         e.preventDefault();
-        //console.log("kliknięcie: ", email)
         props.sendedFunction(user);
         const url ='http://127.0.0.1:8000/api/v1/user-info-in-course/user/' + props.user.id + '/course/' + props.courseID + '/'
         axios.get(url, {

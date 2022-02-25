@@ -24,33 +24,15 @@ export default function UserCoursesList(props) {
         } else if (pressedSort === 'none' || pressedSort === null || pressedFilter === 'none') {
             SetSCS(courses)
         }
-        console.log("got id: ", props.pressedFilterId)
-        console.log("courses ", props.courses)
     })
 
     function getData(id) {
-      console.log("zwrócone id: ", id);
       localStorage.setItem("pressedCourseID", id);
       props.returnId(id)
     }
 
     return (
     <div>
-        {/* {
-            pressedFilter === null ?
-            <div className={classes.userCoursesListContainer}>
-                {
-                isLoading === false ?
-                sortedCourses.map(course => <CourseCard
-                key={course.id}
-                id={course.id}
-                title={course.title}
-                buttonText={props.buttonContent}
-                sendData = {getData}/>) : 
-                <div className={classes.loadingWrapper}><div className={classes.loading}></div></div>
-                }
-            </div> : null
-        } */}
         {
             pressedFilter === 'categories' ?
             <div className={classes.userCoursesListContainer}>
@@ -63,23 +45,13 @@ export default function UserCoursesList(props) {
                 buttonText={props.buttonContent}
                 sendData = {getData}
                 page={props.page}
-                rating={course.rating}/>) : 
+                rating={course.rating}
+                courseCocreator={course.co_creators}
+                creatorId={course.creator.id}/>) : 
                 <div className={classes.loadingWrapper}><div className={classes.loading}></div></div>
                 }
             </div> : null
         }
-        {/* <div className={classes.userCoursesListContainer}>
-            {
-            isLoading === false ?
-            sortedCoursesState.filter(course => course.category === 3).map(course => <CourseCard
-            key={course.id}
-            id={course.id}
-            title={course.title}
-            buttonText={props.buttonContent}
-            sendData = {getData}/>) : 
-            <div className={classes.loadingWrapper}><div className={classes.loading}></div></div>
-            }
-        </div> */}
         {pressedFilter === 'all' ?
         <div className={classes.userCoursesListContainer}>
             {
@@ -91,7 +63,9 @@ export default function UserCoursesList(props) {
             buttonText={props.buttonContent}
             sendData = {getData}
             page={props.page}
-            rating={course.rating}/>) : 
+            rating={course.rating}
+            courseCocreator={course.co_creators}
+            creatorId={course.creator.id}/>) : 
             <div className={classes.loadingWrapper}><div className={classes.loading}></div></div>
             }
         </div> : null

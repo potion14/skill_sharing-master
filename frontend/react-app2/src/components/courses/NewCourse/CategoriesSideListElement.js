@@ -4,10 +4,7 @@ export default function CategoriesSideListElement(props) {
 
     function handleClick(item, e, type) {
         e.preventDefault();
-        //console.log("kliknięcie: ", email)
         props.remove_data(item, type);
-        //props.removeId(id)
-        //console.log("klikniete id: ", id)
     }
 
     return (

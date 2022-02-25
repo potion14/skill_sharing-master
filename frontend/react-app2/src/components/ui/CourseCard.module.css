@@ -9,7 +9,12 @@
     flex-direction: column;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
     position: relative;
+    overflow-y: scroll;
 }
+
+.singleCourseContainer::-webkit-scrollbar {
+    display: none;
+  }
 
 .singleCourseContainer:hover{
     box-shadow: 0 2px 8px rgba(0, 0, 0, 1.6);
@@ -27,7 +32,7 @@
 }
 
 .singleCourseTitle{
-    font-size: 20px;
+    font-size: 16px;
     margin-left: 10px;
     color: rgb(0, 0, 0);
     cursor: pointer;
@@ -147,4 +152,20 @@
 .ratingListElement div {
     display: flex;
     justify-content: space-between;
+}
+
+.accountIcon {
+    margin: 2px;
+    font-size: 2.5rem;
+}
+
+.creator {
+    height: 3rem;
+    position: absolute;
+    color: black;
+}
+
+.creator:hover {
+    color:rgb(39, 36, 36);
+    cursor: pointer;
 }

@@ -6,7 +6,6 @@ import SubcategoriesList from './SubcategoriesList';
 export default function CategoriesList(props) {
 
     const [categories, setCategories] = useState([]);
-    //const [pressedSub, setPressedSub] = useState()
 
     useEffect(() => {
         const url = 'http://127.0.0.1:8000/api/v1/courses/main_categories';
@@ -20,11 +19,9 @@ export default function CategoriesList(props) {
             .then(res => {
                 setCategories(res.data)
             })
-            //console.log("Categories: pressedSub: ", pressedSub)
     }, [])
 
     function getPressedSubId(id) {
-        //setPressedSub(id)
         props.pressedFilter(id)
     }
 

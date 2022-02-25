@@ -33,7 +33,6 @@ function NewCourseForm() {
     async function submitHandler(event) {
         event.preventDefault();
         if (titleSet === false) {
-            console.log("category: ", category, "subcategory: ", subcategory, "visibility: ", visibilityOption)
             if (category === 0 || subcategory === 0 || visibilityOption ===0) {
                 setWalidator(true)
             } else {
@@ -72,25 +71,9 @@ function NewCourseForm() {
                     }
                 })
                 .then(res => {
-                    //console.log("currentCourseId: ", currentCourseId)
-                    // cocreators.forEach(element => {
-                    //     axios.post('http://127.0.0.1:8000/api/v1/new_course_co_creator/', {
-                    //         course: res.data.at(-1).id,
-                    //         co_creator: element.id,
-                    //         is_active: true
-                    //     }, {
-                    //     auth: {
-                    //         username: localStorage.getItem('username'),
-                    //         email: localStorage.getItem('email'),
-                    //         password: localStorage.getItem('password')
-                    //     }});
-                    //});
                     SetTitleSetState(true);
                     SetId(res.data.at(-1).id);
-                    //console.log("aktualne id", res.data.at(-1).id)
                 })
-            //console.log("to miejsce powinno się wywołać tylko wtedy, gdy wszystko jest uzupełnione, ", walidator)
-            //SetTitleSetState(true);
             document.getElementById("form").reset();
             }
         } 
@@ -130,7 +113,6 @@ function NewCourseForm() {
     }
 
     function setCoCreators(array) {
-        console.log("array z cocreatorsami: ", array)
         setCo(array);
     }
 
@@ -178,7 +160,7 @@ function NewCourseForm() {
             </div>
         </div> :
         <div className={classes.middlePanel}>
-        <h1>Add New Course</h1>
+        <h1>Add New Course Chapter</h1>
             <div className={classes.container}>
                 <form className={classes.form} onSubmit={submitHandler} id="form">  
                     <div className={classes.control}>
@@ -216,8 +198,6 @@ function getCurrentDate() {
     month < 10 ? month = '0' + month : month = month
     let year = newDate.getFullYear();
     let fullDate = date + '-' + month + '-' + year
-    console.log(fullDate);
-    //localStorage.setItem("JoinDate", fullDate);
     return fullDate
 }
 

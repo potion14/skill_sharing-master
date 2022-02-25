@@ -1,4 +1,6 @@
+from django.contrib.auth.models import AnonymousUser
 from django.db import transaction
+from django.http import HttpResponseForbidden
 from rest_framework import viewsets, generics
 from rest_framework.exceptions import APIException
 from rest_framework.permissions import IsAuthenticated
@@ -31,6 +33,7 @@ class CourseParticipantsList(generics.ListCreateAPIView):
 class CreateCourseParticipant(generics.CreateAPIView):
     serializer_class = CourseParticipantSerializer
     queryset = CourseParticipant.objects.all()
+    permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
         from apps.courses.models import CourseRatingSystem
@@ -76,6 +79,7 @@ class CreateCourseParticipant(generics.CreateAPIView):
 class CreateCourseCoCreator(generics.CreateAPIView):
     serializer_class = CourseCoCreatorSerializer
     queryset = CourseCoCreator.objects.all()
+    permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
         try:
@@ -99,11 +103,16 @@ class UserRatingList(generics.ListCreateAPIView):
 class UserPointsView(APIView):
     def get(self, request, *args, **kwargs):
         user = request.user
-        return Response({'user_points': user.points})
+        try:
+            return Response({'user_points': user.points})
+        except AttributeError:
+            return HttpResponseForbidden()
 
 
 class InfoAboutUserInCourseView(APIView):
     def get(self, request, *args, **kwargs):
+        if request.user.id is None:
+            return HttpResponseForbidden()
         user_pk = self.kwargs.get('user_pk')
         course_pk = self.kwargs.get('course_pk')
         user_participant = CourseParticipant.objects.filter(participant_id=user_pk, course_id=course_pk).first()
@@ -117,6 +126,8 @@ class InfoAboutUserInCourseView(APIView):
 
 class FollowerUserInfo(APIView):
     def get(self, request, *args, **kwargs):
+        if request.user.id is None:
+            return HttpResponseForbidden()
         follower_user_pk = self.kwargs.get('follower_pk')
         following_user_pk = self.kwargs.get('followed_user_pk')
         follower = UserFollower.objects.filter(user_id=following_user_pk, follower_id=follower_user_pk).first()
@@ -139,8 +150,12 @@ class UserFollowersList(generics.ListCreateAPIView):
 class UserInfoView(APIView):
     def get(self, request, *args, **kwargs):
         user = request.user
-        serialized_user = UserSerializer(instance=user).data
-        return Response(serialized_user)
+        try:
+            serialized_user = UserSerializer(instance=user).data
+            return Response(serialized_user)
+        except AttributeError:
+            return HttpResponseForbidden()
+
 
 
 class FollowingUsersList(generics.ListCreateAPIView):
@@ -157,6 +172,7 @@ class FollowingUsersList(generics.ListCreateAPIView):
 class CreateNewFollower(generics.CreateAPIView):
     serializer_class = UserFollowerSerializer
     queryset = UserFollower.objects.all()
+    permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
         from apps.courses.models import CourseRatingSystem

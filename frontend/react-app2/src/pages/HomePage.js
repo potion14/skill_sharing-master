@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import MeetupList from "../components/courses/MeetupList";
 import Ad from "../components/layout/Ad";
 import classes from "./HomePage.module.css"
 import axios from "axios";
@@ -64,22 +63,9 @@ function AllMeetupsPage() {
         setTopCourses(res.data.slice(0, 4))
         setIsLoading(false)
       })
-      // axios.get('http://127.0.0.1:8000/api/v1/courses/top-courses-ranking', {
-      // auth: {
-      //     username: localStorage.getItem('username'),
-      //     email: localStorage.getItem('email'),
-      //     password: localStorage.getItem('password')
-      //     }
-      // })
-      // .then(res => {
-      //   setRecent(res.data.slice(0, 4))
-      //   setIsLoading(false)
-      // })
   }, [])
 
   function getId(id) {
-    
-    //<div className={classes.coursesListContainer}><MeetupList courses={DUMMY_DATA} page="HomePage"/></div>
 
   }
 
@@ -89,7 +75,7 @@ function AllMeetupsPage() {
       <div className={classes.coursesListContainer}>
         {
           <UserCoursesList courses={topCourses} IsLoading={loading} returnId={getId} pressedFilter='all' pressedFilterId={null}
-          pressedSort={null} buttonContent="zapisz" page="AllCourses"/>
+          pressedSort={null} buttonContent="sign in" page="AllCourses"/>
         }
       </div>
       <hr className={classes.listHr}></hr>
@@ -97,7 +83,7 @@ function AllMeetupsPage() {
       <div className={classes.coursesListContainer}>
         {
           <UserCoursesList courses={topCourses} IsLoading={loading} returnId={getId} pressedFilter='all' pressedFilterId={null}
-          pressedSort={null} buttonContent="zapisz" page="AllCourses"/>
+          pressedSort={null} buttonContent="sign in" page="AllCourses"/>
         }
       </div>
       <div className={classes.bottomEnder}></div>

@@ -32,8 +32,6 @@ export default function CoCreatorsCombo(props) {
             setLoading(false)
         });
     }, [])
-    
-    
 
     function getSelectedUser(user) {
         setSelectedUsers(prevState => ([...prevState, user]))
@@ -43,7 +41,6 @@ export default function CoCreatorsCombo(props) {
         array.splice(index, 1)
         setUsers(array)
         props.getData(selectedUsers);
-        console.log("usersi: ", selectedUsersIds)
     }
 
     function removeSelectedUser(user) {
@@ -58,7 +55,6 @@ export default function CoCreatorsCombo(props) {
             setUsers(prevState => ([...prevState, user]))
           }
           props.getData(selectedUsers);
-          console.log("usersi: ", selectedUsersIds)
     }
 
     if (loading === true) return (<div className={classes.loadingContainer}>

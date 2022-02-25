@@ -31,8 +31,6 @@ export default function Comment(props) {
                 email: localStorage.getItem('email'),
                 password: localStorage.getItem('password')
             }})
-            console.log("reply: ", reply)
-            // console.log("commentId: ", props.commentId)
             setResponses(prevState => [...prevState, {
                 chapter: props.chapterId,
                 content: reply,

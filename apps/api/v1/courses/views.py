@@ -20,7 +20,8 @@ class CoursesViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user_id = self.kwargs.get('user_pk')
         if user_id:
-            queryset = Course.objects.filter(Q(creator_id=user_id) | Q(co_creators__co_creator_id=user_id))
+            queryset = Course.objects.get_by_user_type(self.request.user)\
+                .filter(Q(creator_id=user_id) | Q(co_creators__co_creator_id=user_id))
         else:
             queryset = Course.objects.get_by_user_type(self.request.user)
         return queryset
@@ -95,7 +96,8 @@ class TopCoursesRanking(generics.ListCreateAPIView):
 
     def get_queryset(self):
         from django.db.models import Avg
-        queryset = Course.objects.get_by_user_type(self.request.user).annotate(course_rate=Avg('user_ratings__rating')).order_by('-course_rate')
+        queryset = Course.objects.get_by_user_type(self.request.user).annotate(
+            course_rate=Avg('user_ratings__rating')).order_by('-course_rate')
         return queryset
 
     def get_serializer_context(self):

@@ -18,7 +18,6 @@ export default function PointsHistoryLayout(props) {
         })
         .then(res => {
             setPointsHistory(res.data)
-            //console.log("odpowiedź serwera: ", res.data)
             setLoading(false)
         })
     }, [])

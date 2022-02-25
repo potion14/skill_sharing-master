@@ -1,6 +1,5 @@
 import classes from "./UserCourses.module.css";
 import axios from "axios";
-//import { useEffect, useState } from "react";
 import { Component } from 'react';
 import CoursePageLayout from "../../courses/course_page/CoursePageLayout";
 import CategoriesList from "../AllCourses/CategoriesList";
@@ -77,26 +76,9 @@ class UserCourses extends Component {
 
   render() {
     const ID = localStorage.getItem("pressedCourseID");
-    //console.log("render ID: ", ID)
       return (
           <div className={classes.userCoursesContainer}>
               <div className={classes.leftSide}>
-                  {/* <div className={classes.filtersContainer}>
-                      <span className={classes.filtersTitle}>Sort by</span>
-                      <ul className={classes.filtersList}>
-                        {
-                          this.state.sort.map((i, index) => <li key={index} tabIndex={index} onClick={(e) => {this.onSortClick(e, i)}}>{i}</li>)
-                        }
-                      </ul>
-                  </div>
-                  <div className={classes.differentContainer}>
-                      <span className={classes.filtersTitle}>Filter by</span>
-                      <ul className={classes.filtersList}>
-                        {
-                          this.state.filters.map((i, index) => <li key={index} tabIndex={index} onClick={(e) => {this.onFilterClick(e, i)}}>{i}</li>)
-                        }
-                      </ul>
-                  </div> */}
                   <div className={classes.filtersContainer}>
                     <span className={classes.filtersTitle}>Sort by</span>
                     <ul className={classes.filtersList}>
@@ -118,7 +100,7 @@ class UserCourses extends Component {
               <div className={classes.middleContent}>
                   <span className={classes.userCoursesText}>User Courses</span>
                   <UserCoursesList courses={this.state.courses} IsLoading={this.state.isLoading} returnId={this.getId} pressedSort={this.state.pressedSort}
-                  pressedFilter={this.state.pressedFilter} buttonContent="wypisz" page="UserCourses"/>
+                  pressedFilter={this.state.pressedFilter} buttonContent="sign out" page="UserCourses"/>
               </div>
               <div className={classes.rightSide}></div>
               { this.state.modal && <DeleteModal closeModal={this.onCloseModal} cardId={this.state.cardId} /> }

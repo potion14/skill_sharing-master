@@ -11,8 +11,6 @@ export default function CommentsLayout(props) {
     const [id, setId] = useState(props.chapterId);
     const [stop, setStop] = useState(false);
     const url = 'http://127.0.0.1:8000/api/v1/courses/course/chapter/' + props.chapterId + '/comments';
-    
-    //console.log("chapterId: ", props.chapterId)
 
     useEffect(() => {
         if (props.chapterId !== id) {
@@ -22,23 +20,17 @@ export default function CommentsLayout(props) {
             const url = 'http://127.0.0.1:8000/api/v1/courses/course/chapter/' + id + '/comments';
         }
         if (comments.length === 0 && id !== null && stop === false) getData(id)
-        console.log("ustawione w commentLayout id: ", id)
-        console.log("comments: ", comments)
     }, [getData, id]) //problematic point (, [])
 
     function getData(id) {
-        console.log(url)
-        console.log("getData")
         axios.get(url, {
             auth: {
                 username: localStorage.getItem('username'),
                 email: localStorage.getItem('email'),
                 password: localStorage.getItem('password')
             }}).then(res => {
-                console.log("axios get")
                 setC(res.data);
                 setLoading(false);
-                //setId(null)
                 if (comments.length === 0 && id !== null) setStop(true)
                 if (comments.length !== 0 && id !== null) setStop(true)
             })

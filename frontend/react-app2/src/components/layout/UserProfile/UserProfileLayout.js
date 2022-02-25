@@ -47,7 +47,6 @@ function UserProfileLayout() {
     function getId(id) {
         setCardId(id)
         setModal(true)
-        //console.log("id: ", id)
     }
 
     function onCloseModal(id, buttonType) {
@@ -110,7 +109,7 @@ function UserProfileLayout() {
                     <div className={classes.cList}>
                         {
                             currentDisplay === "courses" ? <UserCoursesList courses={courses} IsLoading={isLoading} returnId={getId}
-                            pressedSort={pressedSort} buttonContent="usuń" pressedFilter='all' page='OtherUserPage'/> : 
+                            pressedSort={pressedSort} buttonContent="delete" pressedFilter='all' page='UserProfile'/> : 
                             currentDisplay === "followers" ? <div>{followers.map((e, index) => <div key={index} className={classes.listItem}>
                                 <a>Email: {e.email}</a><a>Username: {e.username}</a><a>Points: {e.points}</a></div>)}</div> :
                             <div>{following_users.map((e, index) => <div key={index} className={classes.listItem}>

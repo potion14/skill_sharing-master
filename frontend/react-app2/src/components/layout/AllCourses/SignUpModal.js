@@ -7,7 +7,6 @@ export default function SignUpModal(props) {
     const [points, setPoints] = useState(0)
     const [loading, setLoading] = useState(true)
     const [price, setPrice] = useState(1000)
-    //const [alert, setAlert] = useState(false)
 
     function handleClick(e) {
         e.preventDefault();
@@ -27,7 +26,6 @@ export default function SignUpModal(props) {
                     password: localStorage.getItem('password')
                 }
             }).catch(err => {
-                //setAlert(true)
             })
             props.closeModal()
     }
@@ -44,7 +42,6 @@ export default function SignUpModal(props) {
         })
         .then(res => {
             setPoints(res.data.user_points);
-            console.log("user_points: ", res.data)
         })
 
         const url2 = 'http://127.0.0.1:8000/api/v1/courses/all_courses/' + props.courseId;
@@ -57,7 +54,6 @@ export default function SignUpModal(props) {
         })
         .then(res => {
             setPrice(res.data.price)
-            console.log("caly kurs: ", res.data)
             setLoading(false)
         })
     }, [])

@@ -25,7 +25,6 @@ export default function CategoriesCombo(props) {
             }
         })
         .then(res => {
-            //console.log("categories: ", res.data)
             setCategories(res.data)
             setLoading(false)
         });
@@ -37,7 +36,6 @@ export default function CategoriesCombo(props) {
             }
         })
         .then(res => {
-            //console.log("categories: ", res.data)
             setSubCategories(res.data)
             setLoading(false)
         });

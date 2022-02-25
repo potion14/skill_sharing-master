@@ -6,11 +6,8 @@ function EditCourse(props) {
     const location = useLocation()
     const Id = location.state.id
 
-    //console.log("params: ", params.Id)
-    //console.log("location: ", location)
-
     return (
-        <div><CourseEditLayout Title={location.state.title} Id={Id} {...props}></CourseEditLayout></div>
+        <div><CourseEditLayout cocreator={location.state.cocreator} Title={location.state.title} Id={Id} {...props}></CourseEditLayout></div>
     );
 }
 

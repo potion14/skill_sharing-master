@@ -29,7 +29,6 @@ class CoursePageLayout extends Component {
     handleClick(e, id) {
         e.preventDefault()
         this.setState({pressedId: id, currentContent: this.state.chapters[id].content, title: this.state.chapters[id].title, chapterId: this.state.chapters[id].id})
-        console.log("chapter: ", this.state.chapterId)
     }
 
     componentDidMount() {

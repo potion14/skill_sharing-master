@@ -13,7 +13,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
-    points = models.IntegerField(default=0)
+    points = models.IntegerField(default=100)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
@@ -30,6 +30,9 @@ class CourseCoCreator(models.Model):
     co_creator = models.ForeignKey(CustomUser, verbose_name=_('Co-Creator'), related_name='courses_managed',
                                    on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
+
+    class Meta:
+        unique_together = ('course', 'co_creator',)
 
 
 class CourseParticipant(models.Model):

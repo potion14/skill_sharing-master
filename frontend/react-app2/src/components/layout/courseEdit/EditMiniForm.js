@@ -10,19 +10,14 @@ export default function EditMiniForm(props) {
     function handleChange(e) {
         e.preventDefault();
         setContent(e.target.value);
-        //axios.put()
     }
 
     useEffect(() => {
         setId(props.id)
     }, [])
 
-    //console.log("id w edycji: ", props.id)
     const url = 'http://127.0.0.1:8000/api/v1/courses/all_courses/' + props.id
-    //console.log("url ", url)
     const url2 = "http://127.0.0.1:8000/api/v1/courses/course/" + props.id + "/chapters/" + props.chId
-    
-    console.log("chapter database id: ", props.chId)
 
 
     function handleClick(e) {
@@ -47,7 +42,6 @@ export default function EditMiniForm(props) {
             email: localStorage.getItem('email'),
             password: localStorage.getItem('password')
         }})
-        console.log("change detected miniform: ")
         props.change(Math.random())
     }
 

@@ -11,7 +11,6 @@ function ChapterCard (props) {
 
     function handleClick(id) {
         setPressed(id)
-        console.log(id)
         onTrigger()
     }
 
